@@ -1,25 +1,34 @@
 #include <iostream>
 #include <String.hpp>
 
+
+using std::cout;
+using std::cin;
+using std::endl;
+
 int main()
 {
-    String str;
-    str.push_back('o');
+   String str;
+   cout<<"My name is : "<<str.append("Make")
+      <<endl;
 
-    //str.append("Hello");
-    str.append("Hello",6);
+   String str_t("Hello_world");
+   cout<<"Size:"<<str_t.size()<<"Length: "
+      <<str_t.length()<<endl;
 
-    if(str.empty()){
-        std::cout<<"Empty !";
-    }else{
-        std::cout<<"Not empty !";
+   String str_t2;
+   str_t2.append("Good",5);
 
-    }
+   cout<<str_t2<<" ";
 
+   str_t2.resize(20);
+   str_t2.append("Night",6);
 
-    std::cout<<str;
+   cout<<str_t2;
 
+   cout<<str_t2.pop_back()<<endl;
 
+   str_t2.clear();
 
     return 0;
 }
