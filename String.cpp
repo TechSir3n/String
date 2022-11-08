@@ -1,6 +1,6 @@
-
 #include "String.hpp"
 #include <stdexcept>
+
 String::String()
 {
    m_str=new char[1];
@@ -121,6 +121,25 @@ String &String::insert(std::size_t _pos, const char *_str)
 }
 
 String &String::operator+=(const String &_rhs)
+{
+  std::size_t temp_size = this->m_len + _rhs.m_len;
+
+  delete this->m_str;
+
+  m_str=new char[temp_size+1];
+
+  std::memcpy(m_str,_rhs.m_str,m_len);
+  std::memcpy(m_str+_rhs.m_len,_rhs.m_str,_rhs.m_len+1);
+
+  return *this;
+}
+
+String &String::operator+=(const char *_str)
+{
+
+}
+
+String & String::operator+=(char _sym)
 {
 
 }
