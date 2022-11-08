@@ -8,27 +8,17 @@ using std::endl;
 
 int main()
 {
-   String str;
-   cout<<"My name is : "<<str.append("Make")
-      <<endl;
+    std::string str3;
 
-   String str_t("Hello_world");
-   cout<<"Size:"<<str_t.size()<<"Length: "
-      <<str_t.length()<<endl;
 
-   String str_t2;
-   str_t2.append("Good",5);
+    String str("Hello world");
+    String str2("Hello_Friend");
 
-   cout<<str_t2<<" ";
+    str.swap(std::forward<String>(str2));
 
-   str_t2.resize(20);
-   str_t2.append("Night",6);
-
-   cout<<str_t2;
-
-   cout<<str_t2.pop_back()<<endl;
-
-   str_t2.clear();
+    String temp;
+    temp.swap(std::forward<String>(str2),std::forward<String>(str));
+    cout<<str2;
 
     return 0;
 }
