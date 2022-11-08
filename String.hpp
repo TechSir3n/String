@@ -35,6 +35,26 @@ public:
 
     String &insert(std::size_t _pos,const char *_str);
 
+    String & erase(std::size_t _pos,std::size_t _size);
+
+public:
+    String & operator+=(const String &_rhs);
+
+    String &operator+=(const char *_str);
+
+    String & operator+=(char _sym);
+
+public:
+   friend String operator+(const String &lhs,const String &rhs);
+
+   friend String &operator+(const String &lhs,const char *_str);
+
+   friend String &operator+(const char *_str,const String &lhs);
+
+   friend String &operator+(char _sym,const String &lhs);
+
+   friend String &operator+(const String &lhs,char _sym);
+
 public:
     friend  bool operator<(const String &_hrs,const String &_rhs);
 
@@ -52,6 +72,10 @@ public:
     friend std::ostream & operator<<(std::ostream & out,const String &_str);
 
     friend std::istream & operator>>(std::istream &in,String &_str);
+
+    friend std::istream & getline(std::istream &in,String &_str);
+
+    friend std::istream & getline(std::istream &in,String& _str,char _sym);
 
 public:
     const char &operator[](std::size_t t_index)const;
@@ -77,11 +101,16 @@ public:
 
    std::size_t capacity()const;
 
+   std::size_t find(char _sym,std::size_t _pos)const;
+
    bool empty()const;
 
 public:
    void clear();
 
+   void swap(String &&_tmp)noexcept;
+
+   void swap(String &&t_tmp,String &&_tmp);
 
    void resize(std::size_t _size);
 

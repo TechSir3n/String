@@ -1,7 +1,6 @@
 
 #include "String.hpp"
 #include <stdexcept>
-
 String::String()
 {
    m_str=new char[1];
@@ -29,28 +28,33 @@ String::String(const char *_str, std::size_t t_sym)
 
 String::String(const String &_other)
 {
-    strncpy(m_str,_other.m_str,_other.m_len);
     m_len=_other.m_len;
     m_cap=_other.m_cap;
+
+    std::memcpy(m_str,_other.m_str,m_len);
 }
 
 String::String(String &&rhs)
 {
-    strncpy(m_str,rhs.m_str,m_len);
-    m_cap=rhs.m_cap;
-    m_len=rhs.m_len;
+
+    m_str=new char[rhs.m_len+1];
+    m_str=std::move(rhs.m_str);
+    m_len=std::move(rhs.m_len);
+    m_cap=std::move(rhs.m_cap);
     m_str=nullptr;
 }
 
 String &String::operator=(const String &rhs)
 {
   if(this!=&rhs){
-      delete [] m_str;
+      delete []m_str;
 
       m_str=new char[rhs.m_len+1];
       strncpy(m_str,rhs.m_str,rhs.m_len);
       m_len=rhs.m_len;
       m_cap=rhs.m_cap;
+
+      std::memcpy(this->m_str,rhs.m_str,m_len);
   }
 
   return *this;
@@ -62,9 +66,9 @@ String & String::operator=(String &&rhs)
         delete [] m_str;
 
         m_str=new char[rhs.m_len+1];
-        strncpy(m_str,rhs.m_str,rhs.m_len);
-        m_len=rhs.m_len;
-        m_cap=rhs.m_cap;
+        m_str=std::move(rhs.m_str);
+        m_len=std::move(rhs.m_len);
+        m_cap=std::move(rhs.m_cap);
         m_str=nullptr;
     }
 
@@ -113,7 +117,12 @@ String &String::insert(std::size_t _pos, const char *_str)
 
    strncat(m_str,_str,strlen(_str));
 
-    return *this;
+   return *this;
+}
+
+String &String::operator+=(const String &_rhs)
+{
+
 }
 
 bool operator<(const String &_hrs,const String &_rhs)
@@ -146,6 +155,7 @@ bool operator==(const String &_hrs,const String & _rhs)
     return _hrs.m_str==_rhs.m_str;
 
 }
+
 
 char &String::operator[](std::size_t t_index)
 {
@@ -217,6 +227,20 @@ std::size_t String::capacity() const
     return m_cap;
 }
 
+std::size_t String::find(char _sym, std::size_t _pos) const
+{
+    if(_pos<0 && _pos>m_len){
+        throw std::logic_error("Wrong input position !");
+    }
+
+    for(std::size_t i=0;i<m_len;i++){
+         if(m_str[i]==_sym)
+             return _pos;
+    }
+
+    return String::npos;
+}
+
 bool String::empty() const
 {
     return m_len ? false:true;
@@ -229,6 +253,19 @@ void String::clear()
     }
     m_cap=0;
     m_len=0;
+}
+
+void String::swap(String &&_tmp) noexcept
+{
+    std::swap(m_str,_tmp.m_str);
+    std::swap(m_len,_tmp.m_len);
+    std::swap(m_len,_tmp.m_len);
+
+}
+
+void String::swap(String &&t_tmp, String &&_tmp)
+{
+    t_tmp.swap(std::forward<String>(_tmp));
 }
 
 void String::resize(std::size_t _size)
@@ -252,6 +289,48 @@ String::~String()
     m_cap=0;
 }
 
+std::istream & getline(std::istream &in,String &_str)
+{
+     if(!in){
+         throw std::runtime_error("Error on input !");
+     }
+
+     char m_sym;
+
+     while(true){
+         in.get(m_sym);
+         if(std::isspace(m_sym,in.getloc())|| in.eof()){
+             break;
+         }
+         _str.push_back(m_sym);
+     }
+
+     return in;
+}
+
+std::istream & getline(std::istream &in,String &_str,char _sym)
+{
+    _str.clear();
+
+    if(!in){
+        throw std::runtime_error("Error on input !");
+    }
+
+    char m_sym;
+
+    while(true){
+        in.get(m_sym);
+
+       if(m_sym==_sym){
+            break;
+        }
+
+         _str.push_back(m_sym);
+    }
+
+    return in;
+}
+
 std::ostream & operator<<(std::ostream & out,const String &_str)
 {
     for(std::size_t i = 0;i<_str.size();i++){
@@ -263,6 +342,8 @@ std::ostream & operator<<(std::ostream & out,const String &_str)
 
 std::istream & operator>>(std::istream &in,String &_str)
 {
+    _str.clear();
+
     if(!in){
         throw std::runtime_error("Error on input !");
     }
