@@ -124,6 +124,10 @@ String &String::insert(std::size_t _pos, const char *_str)
 
 String &String::operator+=(const String &_rhs)
 {
+   if(!_rhs.m_str){
+       throw std::runtime_error("String from _rhs empty () ");
+   }
+
   std::size_t temp_size = this->m_len + _rhs.m_len;
 
   delete this->m_str;
@@ -170,35 +174,34 @@ String & String::operator+=(char _sym)
 
 bool operator<(const String &_hrs,const String &_rhs)
 {
-    return _hrs.m_str<_rhs.m_str;
+    return (std::strcmp(_hrs.m_str,_rhs.m_str)<0);
 }
 
 bool operator>(const String &_hrs,const String &_rhs)
 {
-    return _hrs.m_str>_rhs.m_str;
+    return (std::strcmp(_hrs.m_str,_rhs.m_str)>0);
 }
 
 bool operator>=(const String &_hrs,const String &_rhs)
 {
-    return _hrs.m_str>=_rhs.m_str;
+    return (std::strcmp(_hrs.m_str,_rhs.m_str)>=0);
 }
 
 bool operator<=(const String &_hrs,const String &_rhs)
 {
-    return _hrs.m_str<=_rhs.m_str;
+    return (std::strcmp(_hrs.m_str,_rhs.m_str)<=0);
 }
 
 bool operator!=(const String &_hrs,const String &_rhs)
 {
-    return _hrs.m_str!=_rhs.m_str;
+    return (std::strcmp(_hrs.m_str,_rhs.m_str)!=0);
 }
 
 bool operator==(const String &_hrs,const String & _rhs)
 {
-    return _hrs.m_str==_rhs.m_str;
+    return (std::strcmp(_hrs.m_str,_rhs.m_str)==0);
 
 }
-
 
 char &String::operator[](std::size_t t_index)
 {
