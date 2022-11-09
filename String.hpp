@@ -110,7 +110,7 @@ public:
 
    void swap(String &&_tmp)noexcept;
 
-   void swap(String &&t_tmp,String &&_tmp)noexcept;
+   void swap(String &&t_tmp,String &&_tmp);
 
    void resize(std::size_t _size);
 

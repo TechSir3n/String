@@ -306,7 +306,7 @@ void String::swap(String &&_tmp) noexcept
 
 }
 
-void String::swap(String &&t_tmp, String &&_tmp)noexcept
+void String::swap(String &&t_tmp, String &&_tmp)
 {
     t_tmp.swap(std::forward<String>(_tmp));
 }
