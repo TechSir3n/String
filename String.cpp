@@ -1,5 +1,7 @@
 #include "String.hpp"
 #include <stdexcept>
+#include <assert.h>
+
 
 String::String()
 {
@@ -136,12 +138,34 @@ String &String::operator+=(const String &_rhs)
 
 String &String::operator+=(const char *_str)
 {
+    if(_str==nullptr){
+        assert("String empty !");
+    }
 
+    m_len+=strlen(_str);
+
+    delete []m_str;
+    m_str=new char[m_len+1];
+
+    strncat(m_str,_str,m_len);
+    strncat(m_str+m_len,_str,m_len+1);
+
+    return *this;
 }
 
 String & String::operator+=(char _sym)
 {
+    if(_sym!=' '){
+        assert("Empty Symbol !");
+    }
 
+    m_str+=sizeof(_sym);
+    delete m_str;
+    m_str=new char[m_len+1];
+
+    m_str+=_sym;
+
+    return  *this;
 }
 
 bool operator<(const String &_hrs,const String &_rhs)
