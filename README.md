@@ -3,8 +3,8 @@
 ### Equality operator
 
 ```plaintext
- String &amp; operator=(const String &amp;); 
- String &amp; operator=(String &amp;&amp;)noexcept;
+ String & operator=(const String &); 
+ String & operator=(String &&)noexcept;
 ```
 
 ### Element access
@@ -12,29 +12,29 @@
 **Get character of string**
 
 ```plaintext
-const char &amp;operator[](std::size_t t_index)const;
-char &amp;operator[](std::size_t t_index);
+const char & operator[](std::size_t t_index)const;
+char & operator[](std::size_t t_index);
 ```
 
 **Get character of string**
 
 ```plaintext
-const char &amp;at(std::size_t t_index)const;
-char &amp;at(std::size_t t_index);
+const char & at(std::size_t t_index)const;
+char & at(std::size_t t_index);
 ```
 
 **Access first character**
 
 ```plaintext
-const char &amp;front();
-const char &amp;front();
+const char & front();
+char & front();
 ```
 
 __Access back character__
 
 ```plaintext
-const char &amp;back()const;
-char &amp;back();
+const char & back()const;
+char back();
 ```
 
 ### Modifiers
@@ -42,14 +42,14 @@ char &amp;back();
 **Append to String**
 
 ```plaintext
-String &amp; operator+=(const String &amp;_rhs);
-String &amp;operator+=(const char *_str);
-String &amp; operator+=(char _sym);
+String & operator+=(const String &_rhs);
+String & operator+=(const char *_str);
+String & operator+=(char _sym);
 ```
 
 __Swap String values__
 
 ```plaintext
-void swap(String &amp;&amp;_tmp)noexcept;
-void swap(String &amp;&amp;t_tmp,String &amp;&amp;_tmp);
+void swap(String &&_tmp)noexcept;
+void swap(String && t_tmp,String &&_tmp);
 ```
