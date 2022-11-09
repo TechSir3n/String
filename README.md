@@ -1,51 +1,55 @@
-# Class String 
-***
+## Class String
 
 ### Equality operator
-```
- String & operator=(const String &); 
- String & operator=(String &&)noexcept;
- ```
- ***
 
-### Element access 
-__Get character of string__
-```
-const char &operator[](std::size_t t_index)const;
-char &operator[](std::size_t t_index);
-```
-__Get character of string__
-```
-const char &at(std::size_t t_index)const;
-char &at(std::size_t t_index);
+```plaintext
+ String &amp; operator=(const String &amp;); 
+ String &amp; operator=(String &amp;&amp;)noexcept;
 ```
 
-__Access first character__
-```
-const char &front();
-const char &front();
+### Element access
+
+**Get character of string**
+
+```plaintext
+const char &amp;operator[](std::size_t t_index)const;
+char &amp;operator[](std::size_t t_index);
 ```
 
-___Access back character__
-```
-const char &back()const;
-char &back();
-```
-***
+**Get character of string**
 
+```plaintext
+const char &amp;at(std::size_t t_index)const;
+char &amp;at(std::size_t t_index);
+```
+
+**Access first character**
+
+```plaintext
+const char &amp;front();
+const char &amp;front();
+```
+
+\_\_Access back character\_\_
+
+```plaintext
+const char &amp;back()const;
+char &amp;back();
+```
 
 ### Modifiers
-__Append to String__
-```
-String & operator+=(const String &_rhs);
-String &operator+=(const char *_str);
-String & operator+=(char _sym);
+
+**Append to String**
+
+```plaintext
+String &amp; operator+=(const String &amp;_rhs);
+String &amp;operator+=(const char *_str);
+String &amp; operator+=(char _sym);
 ```
 
-___Swap String values__
-```
-void swap(String &&_tmp)noexcept;
-void swap(String &&t_tmp,String &&_tmp);
-```
-***
+\_\_Swap String values\_\_
 
+```plaintext
+void swap(String &amp;&amp;_tmp)noexcept;
+void swap(String &amp;&amp;t_tmp,String &amp;&amp;_tmp);
+```
