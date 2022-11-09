@@ -1,4 +1,4 @@
-## Class String
+## Full implementation of the String class
 
 ### Equality operator
 
