@@ -24,10 +24,6 @@ public:
 
     String(const char *_str,std::size_t t_sym);
 
-    String & push_back(char m_sym);
-
-    String & pop_back();
-
 public:
     String &append(const char *_str);
 
@@ -36,6 +32,10 @@ public:
     String &insert(std::size_t _pos,const char *_str);
 
     String & erase(std::size_t _pos,std::size_t _size);
+
+    String & push_back(char m_sym);
+
+    String & pop_back();
 
 public:
     String & operator+=(const String &_rhs);
