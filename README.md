@@ -51,5 +51,5 @@ __Swap String values__
 
 ```plaintext
 void swap(String &&_tmp)noexcept;
-void swap(String && t_tmp,String &&_tmp);
+void swap(String && t_tmp,String &&_tmp)noexcept;
 ```
