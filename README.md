@@ -30,7 +30,7 @@ const char &amp;front();
 const char &amp;front();
 ```
 
-\_\_Access back character\_\_
+__Access back character__
 
 ```plaintext
 const char &amp;back()const;
@@ -47,7 +47,7 @@ String &amp;operator+=(const char *_str);
 String &amp; operator+=(char _sym);
 ```
 
-\_\_Swap String values\_\_
+__Swap String values__
 
 ```plaintext
 void swap(String &amp;&amp;_tmp)noexcept;
