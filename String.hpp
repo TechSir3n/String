@@ -11,11 +11,11 @@ public:
 
     String(const String &);
 
-    String(String&&);
+    String(String&&)noexcept;
 
     String & operator=(const String &);
 
-    String & operator=(String &&);
+    String & operator=(String &&)noexcept;
 
     ~String();
 
@@ -47,13 +47,13 @@ public:
 public:
    friend String operator+(const String &lhs,const String &rhs);
 
-   friend String &operator+(const String &lhs,const char *_str);
+   friend String operator+(const String &lhs,const char *_str);
 
-   friend String &operator+(const char *_str,const String &lhs);
+   friend String operator+(const char *_str,const String &lhs);
 
-   friend String &operator+(char _sym,const String &lhs);
+   friend String operator+(char _sym,const String &lhs);
 
-   friend String &operator+(const String &lhs,char _sym);
+   friend String operator+(const String &lhs,char _sym);
 
 public:
     friend  bool operator<(const String &_hrs,const String &_rhs);

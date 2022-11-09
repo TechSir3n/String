@@ -12,9 +12,14 @@ String::String()
 
 String::String(const char *_str)
 {
+   if(_str!=nullptr){
     m_len=strlen(_str);
     m_str=new char[m_len+1];
     strncpy(m_str,_str,m_len);
+   }
+   else{
+       std::cerr<<"string equals nullptr !";
+   }
 }
 
 
@@ -23,9 +28,14 @@ String::String(const char *_str, std::size_t t_sym)
    if(t_sym<0)
       throw std::out_of_range("Wrong input index line !");
 
-   m_len=strlen(_str);
-   m_str=new char[m_len+1];
-   strncpy(m_str,_str,t_sym);
+   if(_str!=nullptr){
+       m_len=strlen(_str);
+       m_str=new char[m_len+1];
+       strncpy(m_str,_str,t_sym);
+   }else{
+      std::cerr<<"string equals nullptr !";
+   }
+
 }
 
 String::String(const String &_other)
@@ -36,7 +46,7 @@ String::String(const String &_other)
     std::memcpy(m_str,_other.m_str,m_len);
 }
 
-String::String(String &&rhs)
+String::String(String &&rhs)noexcept
 {
 
     m_str=new char[rhs.m_len+1];
@@ -62,7 +72,7 @@ String &String::operator=(const String &rhs)
   return *this;
 }
 
-String & String::operator=(String &&rhs)
+String & String::operator=(String &&rhs)noexcept
 {
     if(this!=&rhs){
         delete [] m_str;
@@ -95,19 +105,27 @@ String &String::pop_back()
 
 String &String::append(const char *_str)
 {
+   if(_str!=nullptr){
     m_len=strlen(_str);
     m_str=new char[m_len+1];
     strncpy(m_str,_str,m_len);
+   }else{
+       std::cerr<<"string equals nullptr !";
+   }
 
     return *this;
 }
 
 String &String::append(const char *_str, std::size_t _size)
 {
+   if(_str!=nullptr){
     m_len=strlen(_str);
 
     m_str=new char[_size+1];
     strncpy(m_str,_str,_size);
+   }else{
+       std::cerr<<"string nullptr !";
+   }
 
     return *this;
 }
@@ -117,8 +135,11 @@ String &String::insert(std::size_t _pos, const char *_str)
     if(_pos<0 && _pos<m_len)
         throw std::logic_error("Wrong input position !");
 
+  if(_str!=nullptr){
    strncat(m_str,_str,strlen(_str));
-
+  }else{
+      std::cerr<<"string equals nullptr !";
+  }
    return *this;
 }
 
@@ -146,7 +167,7 @@ String &String::operator+=(const char *_str)
         assert("String empty !");
     }
 
-    m_len+=strlen(_str);
+    m_len+=std::strlen(_str);
 
     delete []m_str;
     m_str=new char[m_len+1];
@@ -170,6 +191,33 @@ String & String::operator+=(char _sym)
     m_str+=_sym;
 
     return  *this;
+}
+
+String operator+(const String &lhs,const String &rhs)
+{
+   String total_str=lhs;
+   total_str+=rhs;
+   return total_str;
+}
+
+String operator+(const String &lhs,const char *_str)
+{
+
+}
+
+String operator+(const char *_str,const String &lhs)
+{
+
+}
+
+String operator+(const String &lhs,char _sym)
+{
+
+}
+
+String operator+(char _sym,const String &lhs)
+{
+
 }
 
 bool operator<(const String &_hrs,const String &_rhs)
@@ -337,6 +385,8 @@ String::~String()
 
 std::istream & getline(std::istream &in,String &_str)
 {
+    in.clear();
+
      if(!in){
          throw std::runtime_error("Error on input !");
      }

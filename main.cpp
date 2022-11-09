@@ -8,7 +8,7 @@ using std::endl;
 
 int main()
 {
-    std::string str3;
+   // std::string str3;
 
 
     String str("Hello world");
@@ -19,6 +19,9 @@ int main()
     String temp;
     temp.swap(std::forward<String>(str2),std::forward<String>(str));
     cout<<str2;
+
+    const char *str5=nullptr;
+    String str3(str5);
 
     return 0;
 }
