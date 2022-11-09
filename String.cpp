@@ -1,10 +1,11 @@
 #include "String.hpp"
 #include <stdexcept>
-#include <assert.h>
+#include "StringException.hpp"
 
 
 String::String()
 {
+   str_err = new StringException();
    m_str=new char[1];
    m_len=0;
    m_cap=0;
@@ -18,7 +19,8 @@ String::String(const char *_str)
     strncpy(m_str,_str,m_len);
    }
    else{
-       std::cerr<<"string equals nullptr !";
+       throw StringException("String equals nullptr !");
+
    }
 }
 
@@ -33,7 +35,7 @@ String::String(const char *_str, std::size_t t_sym)
        m_str=new char[m_len+1];
        strncpy(m_str,_str,t_sym);
    }else{
-      std::cerr<<"string equals nullptr !";
+       throw StringException("String equals nullptr !");
    }
 
 }
@@ -110,7 +112,7 @@ String &String::append(const char *_str)
     m_str=new char[m_len+1];
     strncpy(m_str,_str,m_len);
    }else{
-       std::cerr<<"string equals nullptr !";
+       throw StringException("String equals nullptr !");
    }
 
     return *this;
@@ -124,7 +126,7 @@ String &String::append(const char *_str, std::size_t _size)
     m_str=new char[_size+1];
     strncpy(m_str,_str,_size);
    }else{
-       std::cerr<<"string nullptr !";
+      throw StringException("String equals nullptr !");
    }
 
     return *this;
@@ -138,7 +140,7 @@ String &String::insert(std::size_t _pos, const char *_str)
   if(_str!=nullptr){
    strncat(m_str,_str,strlen(_str));
   }else{
-      std::cerr<<"string equals nullptr !";
+      throw StringException("String equals nullptr !");
   }
    return *this;
 }
@@ -164,7 +166,7 @@ String &String::operator+=(const String &_rhs)
 String &String::operator+=(const char *_str)
 {
     if(_str==nullptr){
-        assert("String empty !");
+        throw StringException("String equals nullptr !");
     }
 
     m_len+=std::strlen(_str);
@@ -180,10 +182,6 @@ String &String::operator+=(const char *_str)
 
 String & String::operator+=(char _sym)
 {
-    if(_sym!=' '){
-        assert("Empty Symbol !");
-    }
-
     m_str+=sizeof(_sym);
     delete m_str;
     m_str=new char[m_len+1];

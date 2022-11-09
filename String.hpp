@@ -4,6 +4,7 @@
 #include <cstddef> // std::size_t
 #include <iostream>
 #include <cstring>
+#include "StringException.hpp"
 
 class String{
 public:
@@ -120,6 +121,7 @@ private:
     char * m_str; // c - string
     std::size_t m_len = 0; // length
     std::size_t m_cap= 0; // capacity
+    StringException *str_err;
 
 private:
     static constexpr int npos = -1;

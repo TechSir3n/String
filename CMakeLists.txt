@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.24.2)
 
 project(CLASS_STRING)
 
-set(SOURCE_LIB String.cpp String.hpp)
+set(SOURCE_LIB String.cpp String.hpp StringException.hpp)
 
 set(SOURCE_EXE main.cpp)
 
