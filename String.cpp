@@ -40,6 +40,13 @@ String::String(const char *_str, std::size_t t_sym)
 
 }
 
+String::String(std::size_t i)
+{
+    m_len=i;
+    m_str=new char[i+1];
+    m_str[0]='\0';
+}
+
 String::String(const String &_other)
 {
     m_len=_other.m_len;
@@ -148,12 +155,12 @@ String &String::insert(std::size_t _pos, const char *_str)
 String &String::operator+=(const String &_rhs)
 {
    if(!_rhs.m_str){
-       throw std::runtime_error("String from _rhs empty () ");
+       throw StringException("String from lhs nullptr !");
    }
 
   std::size_t temp_size = this->m_len + _rhs.m_len;
 
-  delete this->m_str;
+  delete [] this->m_str;
 
   m_str=new char[temp_size+1];
 
@@ -161,6 +168,42 @@ String &String::operator+=(const String &_rhs)
   std::memcpy(m_str+_rhs.m_len,_rhs.m_str,_rhs.m_len+1);
 
   return *this;
+}
+
+String operator+(const String &lhs,const String &rhs)
+{
+    String temp(lhs.size()+rhs.size());
+    strncat(temp.m_str,lhs.m_str,temp.m_len);
+    strncat(temp.m_str,rhs.m_str,temp.m_len);
+    return temp;
+}
+
+String operator+(const String &lhs,const char *_str)
+{
+     String temp(_str);
+     temp+=lhs;
+     return temp;
+}
+
+String operator+(const char *_str,const String &lhs)
+{
+     String temp(_str);
+     temp+=lhs;
+     return temp;
+}
+
+String operator+(char _sym,const String &lhs)
+{
+    String temp(_sym);
+    temp+=lhs;
+    return temp;
+}
+
+String operator+(const String _lhs,char _sym)
+{
+     String temp(_sym);
+     temp+=_lhs;
+     return temp;
 }
 
 String &String::operator+=(const char *_str)
@@ -186,36 +229,11 @@ String & String::operator+=(char _sym)
     delete m_str;
     m_str=new char[m_len+1];
 
-    m_str+=_sym;
+   for(std::size_t i=0;i<m_len;i++){
+     m_str[i]=_sym;
+   }
 
     return  *this;
-}
-
-String operator+(const String &lhs,const String &rhs)
-{
-   String total_str=lhs;
-   total_str+=rhs;
-   return total_str;
-}
-
-String operator+(const String &lhs,const char *_str)
-{
-
-}
-
-String operator+(const char *_str,const String &lhs)
-{
-
-}
-
-String operator+(const String &lhs,char _sym)
-{
-
-}
-
-String operator+(char _sym,const String &lhs)
-{
-
 }
 
 bool operator<(const String &_hrs,const String &_rhs)

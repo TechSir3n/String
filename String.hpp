@@ -25,6 +25,8 @@ public:
 
     String(const char *_str,std::size_t t_sym);
 
+    String(std::size_t i);
+
 public:
     String &append(const char *_str);
 
@@ -54,7 +56,7 @@ public:
 
    friend String operator+(char _sym,const String &lhs);
 
-   friend String operator+(const String &lhs,char _sym);
+   friend String operator+(const String _lhs,char _sym);
 
 public:
     friend  bool operator<(const String &_hrs,const String &_rhs);
