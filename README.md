@@ -1,55 +1,63 @@
-## Full implementation of the String class
+Full implementation of the String class
 
-### Equality operator
+## Equality operator
 
 ```plaintext
- String & operator=(const String &); 
- String & operator=(String &&)noexcept;
+ String & operator=(const String &amp;); 
+ String & operator=(String &amp;&amp;)noexcept;
 ```
 
-### Element access
-
-**Get character of string**
+## **Get character of string**
 
 ```plaintext
 const char & operator[](std::size_t t_index)const;
 char & operator[](std::size_t t_index);
 ```
 
-**Get character of string**
+## **Get character of string**
 
 ```plaintext
 const char & at(std::size_t t_index)const;
 char & at(std::size_t t_index);
 ```
 
-**Access first character**
+## **Access first character**
 
 ```plaintext
 const char & front();
 char & front();
 ```
 
-__Access back character__
+## **Access back character**
 
 ```plaintext
-const char & back()const;
+const char &amp; back()const;
 char back();
 ```
 
-### Modifiers
-
-**Append to String**
+## **Append to String**
 
 ```plaintext
-String & operator+=(const String &_rhs);
-String & operator+=(const char *_str);
-String & operator+=(char _sym);
+String &amp; operator+=(const String &amp;_rhs);
+String &amp; operator+=(const char *_str);
+String &amp; operator+=(char _sym);
 ```
 
-__Swap String values__
+## **Swap String values**
 
 ```plaintext
-void swap(String &&_tmp)noexcept;
-void swap(String && t_tmp,String &&_tmp)noexcept;
+void swap(String &amp;&amp;_tmp)noexcept;
+void swap(String &amp;&amp; t_tmp,String &amp;&amp;_tmp)noexcept;
+```
+
+##  **Comparisions String** 
+
+```plaintext
+
+friend  bool operator<(const String &_hrs,const String &_rhs);
+friend bool operator>(const String &_hrs,const String &_rhs);
+friend bool  operator==(const String& _hrs,const String &_rhs);
+friend bool  operator!=(const String &_hrs,const String & _rhs);
+friend bool operator<=(const String &_hrs,const String &_rhs);
+friend bool operator>=(const String &_hrs,const String &_rhs);
 ```
