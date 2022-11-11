@@ -8,10 +8,13 @@ using std::endl;
 
 int main()
 {
-    String s;
-    char buffer[20]="hello_world";
-    s.copy(buffer,10,2);
+   try{
+    String s("Gs");
+    s.assign("Hello_world");
     cout<<s;
+    }catch(const StringException &_error){
+        std::cerr<<_error.what();
+    }
 
 
     return 0;

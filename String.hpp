@@ -32,7 +32,7 @@ public:
 public:
     String(const char *_str);
 
-    String(const char *_str,std::size_t t_sym);
+    String(const char *_str,std::size_t t_size);
 
     String(std::size_t n_size,char _sym);
 
@@ -104,25 +104,34 @@ public:
     const char &at(std::size_t t_index)const;
     char &at(std::size_t t_index);
 
-    const char *c_str()const;
+    char data();
+
+    const char *c_str()const noexcept;
+
+    const char *data()const noexcept ;
 
 public:
-   std::size_t size()const;
+   std::size_t size()const noexcept;
 
-   std::size_t max_size()const;
+   std::size_t max_size()const noexcept;
 
-   std::size_t length()const;
+   std::size_t length()const noexcept;
 
-   std::size_t capacity()const;
+   std::size_t capacity()const noexcept;
 
    std::size_t find(char _sym,std::size_t _pos)const;
 
    std::size_t copy(char *_str,std::size_t n_size,std::size_t _pos);
 
-   bool empty()const;
+   bool empty()const noexcept;
 
 public:
-   void clear();
+   int compare(const char *_str)const;
+
+   int compare(std::size_t _pos,std::size_t _len,const char *_str,std::size_t n_size)const;
+
+public:
+   void clear()noexcept;
 
    void swap(String &&_tmp)noexcept;
 
@@ -131,6 +140,10 @@ public:
    void resize(std::size_t _size);
 
    void reverse(std::size_t _size);
+
+   void assign(const char *_str);
+
+   void assign(const char*_str,std::size_t n_size);
 
 public:
 
@@ -147,15 +160,13 @@ public:
        class Iterator
        {
        public:
-         friend class String;
-
          Iterator();
 
          Iterator(String_iterator_type _type);
 
        public:
          char &operator*();
-         const char & operator*()const;
+         const char &operator*()const;
 
          char  & operator[](int);
          const char & operator[](int)const;
@@ -178,26 +189,24 @@ public:
    };
 
 public:
-      using pointer = Iterator;
+   Iterator begin()const;
 
-public:
-   Iterator begin()noexcept ;
+   Iterator end()const;
 
-   Iterator end()noexcept;
+   Iterator rbegin()const;
 
-   Iterator rbegin()noexcept;
+   Iterator rend()const;
 
-   Iterator rend()noexcept;
+   Iterator cend()const;
 
-   Iterator cend()noexcept;
-
-   Iterator cbegin()noexcept;
+   Iterator cbegin()const;
 
 private:
    char * m_str; // c - string
    std::size_t m_len = { 0 }; // length
    std::size_t m_cap = { 0 }; // capacity
    StringException *str_err;
+   using pointer = Iterator;
 
 private:
     static constexpr int npos = -1;
