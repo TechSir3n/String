@@ -8,12 +8,10 @@ using std::endl;
 
 int main()
 {
-    String str("Hello");
-    String str2("World");
-
-
-    String str_t=str+str2;
-    cout<<str_t;
+    String s;
+    char buffer[20]="hello_world";
+    s.copy(buffer,10,2);
+    cout<<s;
 
 
     return 0;

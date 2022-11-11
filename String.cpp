@@ -2,7 +2,6 @@
 #include <stdexcept>
 #include "StringException.hpp"
 
-
 String::String()
 {
    str_err = new StringException();
@@ -24,11 +23,10 @@ String::String(const char *_str)
    }
 }
 
-
 String::String(const char *_str, std::size_t t_sym)
 {
    if(t_sym<0)
-      throw std::out_of_range("Wrong input index line !");
+      throw std::runtime_error("Wrong input size string") ;
 
    if(_str!=nullptr){
        m_len=strlen(_str);
@@ -40,10 +38,20 @@ String::String(const char *_str, std::size_t t_sym)
 
 }
 
+String::String(std::size_t n_size, char _sym)
+{
+   m_len=n_size;
+   m_str=new char[m_len+1];
+
+   for(std::size_t i=0;i<m_len;i++){
+       m_str[i]=_sym;
+   }
+}
+
 String::String(std::size_t i)
 {
     m_len=i;
-    m_str=new char[i+1];
+    m_str=new char[m_len+1];
     m_str[0]='\0';
 }
 
@@ -158,14 +166,18 @@ String &String::operator+=(const String &_rhs)
        throw StringException("String from lhs nullptr !");
    }
 
-  std::size_t temp_size = this->m_len + _rhs.m_len;
+   if(this!=&_rhs){
 
-  delete [] this->m_str;
+     std::size_t total_length=m_len+_rhs.m_len;
+     char *_buffer=new char[total_length+1];
 
-  m_str=new char[temp_size+1];
+     std::copy(m_str,m_str+m_len,_buffer);
+     std::copy(_rhs.m_str,_rhs.m_str+_rhs.m_len,_buffer+m_len);
+     std::swap(m_str,_buffer);
+     m_len=total_length;
 
-  std::memcpy(m_str,_rhs.m_str,m_len);
-  std::memcpy(m_str+_rhs.m_len,_rhs.m_str,_rhs.m_len+1);
+     delete[]_buffer;
+   }
 
   return *this;
 }
@@ -212,20 +224,18 @@ String &String::operator+=(const char *_str)
         throw StringException("String equals nullptr !");
     }
 
-    m_len+=std::strlen(_str);
-
-    delete []m_str;
+    m_len+=strlen(_str);
     m_str=new char[m_len+1];
 
     strncat(m_str,_str,m_len);
-    strncat(m_str+m_len,_str,m_len+1);
+    strncat(m_str,_str,m_len+1);
 
     return *this;
 }
 
 String & String::operator+=(char _sym)
 {
-    m_str+=sizeof(_sym);
+    m_len+=sizeof(_sym);
     delete m_str;
     m_str=new char[m_len+1];
 
@@ -351,6 +361,23 @@ std::size_t String::find(char _sym, std::size_t _pos) const
     return String::npos;
 }
 
+std::size_t String::copy(char *_str, std::size_t n_size, std::size_t _pos)
+{
+    if(!_str){
+        throw StringException("String equals nullptr !");
+    }
+
+    m_len=n_size;
+    m_str=new char[m_len+1];
+
+    for(std::size_t i=0;i<m_len;i++){
+       m_str[i]=_str[_pos+i];
+    }
+
+
+    return n_size;
+}
+
 bool String::empty() const
 {
     return m_len ? false:true;
@@ -390,6 +417,8 @@ void String::resize(std::size_t _size)
    delete [] m_str;
    m_str=_temp;
 }
+
+
 
 String::~String()
 {

@@ -8,6 +8,15 @@
 
 class String{
 public:
+    using reference=char&;
+
+    using value_type = char;
+
+    using size_type=std::size_t;
+
+    using const_pointer=const char*;
+
+public:
     String() ;
 
     String(const String &);
@@ -24,6 +33,8 @@ public:
     String(const char *_str);
 
     String(const char *_str,std::size_t t_sym);
+
+    String(std::size_t n_size,char _sym);
 
     String(std::size_t i);
 
@@ -106,6 +117,8 @@ public:
 
    std::size_t find(char _sym,std::size_t _pos)const;
 
+   std::size_t copy(char *_str,std::size_t n_size,std::size_t _pos);
+
    bool empty()const;
 
 public:
@@ -119,11 +132,72 @@ public:
 
    void reverse(std::size_t _size);
 
+public:
+
+   struct String_iterator_type{
+       char *_first;
+       const size_type *_size;
+       size_type _pos;
+
+       String_iterator_type(char *m_first,const size_type *m_size,size_type m_pos):
+           _first(m_first),_size(m_size),_pos(m_pos) {  }
+   };
+
+    public:
+       class Iterator
+       {
+       public:
+         friend class String;
+
+         Iterator();
+
+         Iterator(String_iterator_type _type);
+
+       public:
+         char &operator*();
+         const char & operator*()const;
+
+         char  & operator[](int);
+         const char & operator[](int)const;
+
+       public:
+         Iterator & operator++();
+
+         Iterator operator++(int);
+
+         Iterator & operator--();
+
+         Iterator operator--(int);
+
+         Iterator operator+(std::size_t t_n);
+
+         Iterator operator-(std::size_t t_n);
+
+       protected:
+         String_iterator_type m_current_pos;
+   };
+
+public:
+      using pointer = Iterator;
+
+public:
+   Iterator begin()noexcept ;
+
+   Iterator end()noexcept;
+
+   Iterator rbegin()noexcept;
+
+   Iterator rend()noexcept;
+
+   Iterator cend()noexcept;
+
+   Iterator cbegin()noexcept;
+
 private:
-    char * m_str; // c - string
-    std::size_t m_len = 0; // length
-    std::size_t m_cap= 0; // capacity
-    StringException *str_err;
+   char * m_str; // c - string
+   std::size_t m_len = { 0 }; // length
+   std::size_t m_cap = { 0 }; // capacity
+   StringException *str_err;
 
 private:
     static constexpr int npos = -1;
