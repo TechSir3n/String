@@ -535,25 +535,75 @@ std::size_t String::copy(char *_str, std::size_t n_size, std::size_t _pos)
      return in;
  }
 
- String::Iterator::Iterator(String_iterator_type _type):m_current_pos(_type) {  }
+String::Iterator::Iterator() { }
 
 
- const char &String::Iterator::operator*()const
- {
+String::Iterator::Iterator(String_iterator_type _type):m_current_pos(_type) {  }
 
- }
 
- char &String::Iterator::operator[](int)
- {
+const char &String::Iterator::operator*()const
+{
+ return *(m_current_pos._first+m_current_pos._pos);
+}
 
- }
+char &String::Iterator::operator[](size_type i)
+{
+    if(i<0 && i>*m_current_pos._size){
+           throw StringException::IteratorException("Wrong input index to iterator !");
+    }
 
- char &String::Iterator::operator*()
- {
+    return *(m_current_pos._first+i);
+}
 
- }
+String::Iterator &String::Iterator::operator++()
+{
+    if(m_current_pos._pos>*m_current_pos._size){
+            throw StringException::IteratorException("Iterator ouf of range of the string ");
+    }
 
- const char & String::Iterator::operator[](int)const
- {
+    m_current_pos._pos++;
+    return *this;
+}
 
- }
+String::Iterator &String::Iterator::operator--()
+{
+    if(m_current_pos._pos==0){
+        throw StringException::IteratorException("String empty decrement error");
+    }
+
+    --m_current_pos._pos;
+    return *this;
+}
+
+String::Iterator String::Iterator::operator--(int)
+{
+    if(m_current_pos._pos==0){
+        throw StringException::IteratorException("String empty decrement error");
+    }
+    --m_current_pos._pos;
+    return *this;
+}
+
+String::Iterator String::Iterator::operator++(int)
+{
+    if(m_current_pos._pos>*m_current_pos._size){
+            throw StringException::IteratorException("Iterator ouf of range of the string ");
+    }
+
+    m_current_pos._pos++;
+    return *this;
+}
+
+char &String::Iterator::operator*()
+{
+    return *(m_current_pos._first+m_current_pos._pos);
+}
+
+const char & String::Iterator::operator[](size_type i)const
+{
+     if(i<0 && i>*m_current_pos._size){
+            throw StringException::IteratorException("Wrong input position in iterator !");
+     }
+
+     return *(m_current_pos._first+i);
+}

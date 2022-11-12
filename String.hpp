@@ -154,6 +154,10 @@ public:
 
        String_iterator_type(char *m_first,const size_type *m_size,size_type m_pos):
            _first(m_first),_size(m_size),_pos(m_pos) {  }
+
+       String_iterator_type() { _first = nullptr; _size=nullptr; _pos = 0; }
+
+       ~String_iterator_type() { delete _first; delete _size; }
    };
 
     public:
@@ -168,11 +172,11 @@ public:
          char &operator*();
          const char &operator*()const;
 
-         char  & operator[](int);
-         const char & operator[](int)const;
+         char  & operator[](size_type i);
+         const char & operator[](size_type i)const;
 
        public:
-         Iterator & operator++();
+         Iterator &operator++();
 
          Iterator operator++(int);
 
@@ -180,12 +184,15 @@ public:
 
          Iterator operator--(int);
 
-         Iterator operator+(std::size_t t_n);
+         Iterator operator+(size_type t_n);
 
-         Iterator operator-(std::size_t t_n);
+         Iterator operator-(size_type t_n);
 
        protected:
          String_iterator_type m_current_pos;
+
+       private:
+         friend class String;
    };
 
 public:
