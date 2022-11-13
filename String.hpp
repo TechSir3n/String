@@ -32,20 +32,20 @@ public:
 public:
     String(const char *_str);
 
-    String(const char *_str,std::size_t t_size);
+    String(const char *_str,size_type t_size);
 
-    String(std::size_t n_size,char _sym);
+    String(size_type n_size,char _sym);
 
-    String(std::size_t i);
+    String(size_type i);
 
 public:
     String &append(const char *_str);
 
-    String & append(const char *_str,std::size_t _size);
+    String & append(const char *_str,size_type _size);
 
-    String &insert(std::size_t _pos,const char *_str);
+    String &insert(size_type _pos,const char *_str);
 
-    String & erase(std::size_t _pos,std::size_t _size);
+    String & erase(size_type _pos,size_type _size);
 
     String & push_back(char m_sym);
 
@@ -92,8 +92,8 @@ public:
     friend std::istream & getline(std::istream &in,String& _str,char _sym);
 
 public:
-    const char &operator[](std::size_t t_index)const;
-    char &operator[](std::size_t t_index);
+    const char &operator[](size_type t_index)const;
+    char &operator[](size_type t_index);
 
     const char &back()const;
     char &back();
@@ -101,14 +101,18 @@ public:
     const char &front()const;
     char &front();
 
-    const char &at(std::size_t t_index)const;
-    char &at(std::size_t t_index);
+    const char &at(size_type t_index)const;
+    char &at(size_type t_index);
 
     char data();
 
     const char *c_str()const noexcept;
 
     const char *data()const noexcept ;
+
+    const char * assign(const char*_str,std::size_t n_size);
+
+    const char * assign(const char *_str);
 
 public:
    std::size_t size()const noexcept;
@@ -119,16 +123,16 @@ public:
 
    std::size_t capacity()const noexcept;
 
-   std::size_t find(char _sym,std::size_t _pos)const;
+   std::size_t find(char _sym,size_type _pos)const;
 
-   std::size_t copy(char *_str,std::size_t n_size,std::size_t _pos);
+   std::size_t copy(char *_str,size_type n_size,size_type _pos);
 
    bool empty()const noexcept;
 
 public:
    int compare(const char *_str)const;
 
-   int compare(std::size_t _pos,std::size_t _len,const char *_str,std::size_t n_size)const;
+   int compare(size_type _pos,size_type _len,const char *_str,size_type n_size)const;
 
 public:
    void clear()noexcept;
@@ -137,13 +141,9 @@ public:
 
    void swap(String &&t_tmp,String &&_tmp);
 
-   void resize(std::size_t _size);
+   void resize(size_type _size);
 
-   void reverse(std::size_t _size);
-
-   void assign(const char *_str);
-
-   void assign(const char*_str,std::size_t n_size);
+   void reverse(size_type _size);
 
 public:
 
@@ -209,11 +209,16 @@ public:
    Iterator cbegin()const;
 
 private:
+   String_iterator_type f_begin() const;
+   String_iterator_type l_end() const ;
+
+private:
    char * m_str; // c - string
    std::size_t m_len = { 0 }; // length
    std::size_t m_cap = { 0 }; // capacity
    StringException *str_err;
    using pointer = Iterator;
+   //using const_pointer=Const_Iterator;
 
 private:
     static constexpr int npos = -1;

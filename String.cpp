@@ -18,12 +18,13 @@ String::String(const char *_str)
     strncpy(m_str,_str,m_len);
    }
    else{
-       throw StringException("String equals nullptr !");
+       throw StringException(
+                   "String equals nullptr, ::String(const char *_str)");
 
    }
 }
 
-String::String(const char *_str, std::size_t t_size)
+String::String(const char *_str, size_type t_size)
 {
    if(t_size<0)
       throw std::runtime_error("Wrong input size string") ;
@@ -33,12 +34,13 @@ String::String(const char *_str, std::size_t t_size)
        m_str=new char[m_len+1];
        strncpy(m_str,_str,t_size);
    }else{
-       throw StringException("String equals nullptr !");
+       throw StringException(
+                   "String equals nullptr, ::String(const char *_str,std::size_t t_size)");
    }
 
 }
 
-String::String(std::size_t n_size, char _sym)
+String::String(size_type n_size, char _sym)
 {
    m_len=n_size;
    m_str=new char[m_len+1];
@@ -48,7 +50,7 @@ String::String(std::size_t n_size, char _sym)
    }
 }
 
-String::String(std::size_t i)
+String::String(size_type i)
 {
     m_len=i;
     m_str=new char[m_len+1];
@@ -126,13 +128,14 @@ String &String::append(const char *_str)
     m_str=new char[m_len+1];
     strncpy(m_str,_str,m_len);
    }else{
-       throw StringException("String equals nullptr !");
+       throw StringException(
+                   "String equals nullptr, ::append(const char *_str)");
    }
 
     return *this;
 }
 
-String &String::append(const char *_str, std::size_t _size)
+String &String::append(const char *_str, size_type _size)
 {
    if(_str!=nullptr){
     m_len=strlen(_str);
@@ -140,13 +143,14 @@ String &String::append(const char *_str, std::size_t _size)
     m_str=new char[_size+1];
     strncpy(m_str,_str,_size);
    }else{
-      throw StringException("String equals nullptr !");
+      throw StringException(
+                   "String equals nullptr, ::append(const char*_str, std::size_t _size)");
    }
 
     return *this;
 }
 
-String &String::insert(std::size_t _pos, const char *_str)
+String &String::insert(size_type _pos, const char *_str)
 {
     if(_pos<0 && _pos<m_len)
         throw std::logic_error("Wrong input position !");
@@ -162,7 +166,8 @@ String &String::insert(std::size_t _pos, const char *_str)
 String &String::operator+=(const String &_rhs)
 {
    if(!_rhs.m_str){
-       throw StringException("String from lhs nullptr !");
+       throw StringException("String from lhs nullptr,"
+                             " ::operator+=(const String &_rhs)");
    }
 
    if(this!=&_rhs){
@@ -220,7 +225,8 @@ String operator+(const String _lhs,char _sym)
 String &String::operator+=(const char *_str)
 {
     if(_str==nullptr){
-        throw StringException("String equals nullptr !");
+        throw StringException(
+                    "String equals nullptr, ::operator+=(const char*_str)");
     }
 
     m_len+=strlen(_str);
@@ -276,12 +282,12 @@ bool operator==(const String &_hrs,const String & _rhs)
 
 }
 
-char &String::operator[](std::size_t t_index)
+char &String::operator[](size_type t_index)
 {
     return *(m_str+t_index);
 }
 
-const char &String::operator[](std::size_t t_index)const
+const char &String::operator[](size_type t_index)const
 {
        return *(m_str+t_index);
 }
@@ -307,10 +313,11 @@ char &String::front()
 
 }
 
-char &String::at(std::size_t t_index)
+char &String::at(size_type t_index)
 {
     if(t_index<0 && t_index>m_len)
-        throw std::logic_error("Wrong input index line");
+        throw std::logic_error(
+                "Wrong input index line ::at(std::size_t t_index)");
     return operator[](t_index);
 }
 
@@ -324,21 +331,63 @@ const char *String::data() const noexcept
     return m_str;
 }
 
-void  String::assign(const char *_str)
+const char *String::assign(const char *_str, size_type n_size)
 {
     if(!_str){
-        throw StringException("String equals nullptr !");
+        throw StringException("String equals nullptr, ::assign(const char*_str,std::size_t n_size)");
     }
 
-   m_len=strlen(_str);
-   m_str=new char[m_len+1];
+    delete[]m_str;
 
+    m_len=n_size;
+    m_str=new char[m_len+1];
+
+    strncpy(m_str,_str,m_len);
+
+    return _str;
+}
+
+const char * String::assign(const char *_str)
+{
+    if(!_str){
+        throw StringException(
+                    "String equals nullptr, ::assign(const char *_str,std::size_t n_size)");
+    }
+
+   delete []m_str;
+   m_len=strlen(_str);
+
+   m_str=new char[m_len+1];
+   strncpy(m_str,_str,m_len);
+
+   return _str;
+}
+
+String::Iterator String::begin() const
+{
+    return f_begin();
+}
+
+String::Iterator String::end() const
+{
+    return l_end();
+}
+
+String::String_iterator_type String::f_begin() const
+{
+    return String_iterator_type(m_str,&m_len,0);
+}
+
+String::String_iterator_type String::l_end() const
+{
+    return String_iterator_type(m_str,&m_len,m_len);
 }
 
 const char &String::at(std::size_t t_index) const
 {
     if(t_index<0 && t_index>m_len)
-        throw std::logic_error("Wrong input index line");
+        throw std::logic_error(
+                "Wrong input index string ::at(std::size_t t_index)");
     return operator[](t_index);
 }
 
@@ -362,10 +411,11 @@ std::size_t String::capacity() const noexcept
     return m_cap;
 }
 
-std::size_t String::find(char _sym, std::size_t _pos) const
+std::size_t String::find(char _sym, size_type _pos) const
 {
     if(_pos<0 && _pos>m_len){
-        throw std::logic_error("Wrong input position !");
+        throw std::logic_error(
+                    "Wrong input position, ::find(char _sym,std::size_t _pos)");
     }
 
     for(std::size_t i=0;i<m_len;i++){
@@ -376,10 +426,11 @@ std::size_t String::find(char _sym, std::size_t _pos) const
     return String::npos;
 }
 
-std::size_t String::copy(char *_str, std::size_t n_size, std::size_t _pos)
+std::size_t String::copy(char *_str, size_type n_size, size_type _pos)
 {
     if(!_str){
-        throw StringException("String equals nullptr !");
+        throw StringException(
+                    "String equals nullptr, ::copy(char *_str,""std::size_t n_size,std::size_t _pos)");
     }
 
     m_len=n_size;
@@ -400,7 +451,8 @@ std::size_t String::copy(char *_str, std::size_t n_size, std::size_t _pos)
  int String::compare(const char *_str)const
  {
      if(!_str){
-         throw StringException("String equals nullptr !");
+         throw StringException(
+                     "String equals nullptr, ::compare(const char *_str)");
      }
 
      int m_result = strcmp(m_str,_str);
@@ -437,7 +489,7 @@ std::size_t String::copy(char *_str, std::size_t n_size, std::size_t _pos)
      t_tmp.swap(std::forward<String>(_tmp));
  }
 
- void String::resize(std::size_t _size)
+ void String::resize(size_type _size)
  {
      if(m_len==_size)
          return;
@@ -465,7 +517,7 @@ std::size_t String::copy(char *_str, std::size_t n_size, std::size_t _pos)
      in.clear();
 
       if(!in){
-          throw std::runtime_error("Error on input !");
+          throw std::runtime_error("Error input");
       }
 
       char m_sym;
@@ -486,7 +538,7 @@ std::size_t String::copy(char *_str, std::size_t n_size, std::size_t _pos)
      _str.clear();
 
      if(!in){
-         throw std::runtime_error("Error on input !");
+         throw std::runtime_error("Error on input");
      }
 
      char m_sym;
@@ -549,7 +601,8 @@ const char &String::Iterator::operator*()const
 char &String::Iterator::operator[](size_type i)
 {
     if(i<0 && i>*m_current_pos._size){
-           throw StringException::IteratorException("Wrong input index to iterator !");
+           throw StringException::IteratorException(
+                    "Wrong input index to iterator, ::operator[](size_type i)");
     }
 
     return *(m_current_pos._first+i);
@@ -558,7 +611,8 @@ char &String::Iterator::operator[](size_type i)
 String::Iterator &String::Iterator::operator++()
 {
     if(m_current_pos._pos>*m_current_pos._size){
-            throw StringException::IteratorException("Iterator ouf of range of the string ");
+            throw StringException::IteratorException(
+                    "Iterator ouf of range of the string, ::operator++()");
     }
 
     m_current_pos._pos++;
@@ -568,7 +622,8 @@ String::Iterator &String::Iterator::operator++()
 String::Iterator &String::Iterator::operator--()
 {
     if(m_current_pos._pos==0){
-        throw StringException::IteratorException("String empty decrement error");
+        throw StringException::IteratorException(
+                    "String empty decrement error,::operator--()");
     }
 
     --m_current_pos._pos;
@@ -578,7 +633,8 @@ String::Iterator &String::Iterator::operator--()
 String::Iterator String::Iterator::operator--(int)
 {
     if(m_current_pos._pos==0){
-        throw StringException::IteratorException("String empty decrement error");
+        throw StringException::IteratorException(
+                    "String empty decrement error,::operator--(int)");
     }
     --m_current_pos._pos;
     return *this;
@@ -587,7 +643,8 @@ String::Iterator String::Iterator::operator--(int)
 String::Iterator String::Iterator::operator++(int)
 {
     if(m_current_pos._pos>*m_current_pos._size){
-            throw StringException::IteratorException("Iterator ouf of range of the string ");
+            throw StringException::IteratorException(
+                    "Iterator ouf of range of the string,::operator++(int)");
     }
 
     m_current_pos._pos++;
@@ -602,7 +659,8 @@ char &String::Iterator::operator*()
 const char & String::Iterator::operator[](size_type i)const
 {
      if(i<0 && i>*m_current_pos._size){
-            throw StringException::IteratorException("Wrong input position in iterator !");
+            throw StringException::IteratorException(
+                     "Wrong input position in iterator,::operator[](size_type i)");
      }
 
      return *(m_current_pos._first+i);
