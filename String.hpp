@@ -4,13 +4,17 @@
 #include <cstddef> // std::size_t
 #include <iostream>
 #include <cstring>
+#include <vector>
+#include <algorithm>
 #include "StringException.hpp"
 
 class String{
 public:
-    using reference=char&;
+    using reference_type=char&;
 
     using value_type = char;
+
+    using pointer_type = char*;
 
     using size_type=std::size_t;
 
@@ -30,44 +34,48 @@ public:
     ~String();
 
 public:
-    String(const char *_str);
+    String(const_pointer  _str);
 
-    String(const char *_str,size_type t_size);
+    String(const_pointer _str,size_type t_size);
 
-    String(size_type n_size,char _sym);
+    String(size_type n_size,value_type _sym);
 
     String(size_type i);
 
 public:
-    String &append(const char *_str);
+    String & append(const String &_str);
 
-    String & append(const char *_str,size_type _size);
+    String &append(const_pointer _str);
 
-    String &insert(size_type _pos,const char *_str);
+    String & append(const_pointer _str,size_type _size);
+
+    String & append(size_type _size,value_type _sym);
+
+    String &insert(size_type _pos,const_pointer _str);
 
     String & erase(size_type _pos,size_type _size);
 
-    String & push_back(char m_sym);
+    String & push_back(value_type m_sym);
 
     String & pop_back();
 
 public:
     String & operator+=(const String &_rhs);
 
-    String &operator+=(const char *_str);
+    String &operator+=(const_pointer _str);
 
-    String & operator+=(char _sym);
+    String & operator+=(value_type _sym);
 
 public:
    friend String operator+(const String &lhs,const String &rhs);
 
-   friend String operator+(const String &lhs,const char *_str);
+   friend String operator+(const String &lhs,const_pointer _str);
 
-   friend String operator+(const char *_str,const String &lhs);
+   friend String operator+(const_pointer _str,const String &lhs);
 
-   friend String operator+(char _sym,const String &lhs);
+   friend String operator+(value_type _sym,const String &lhs);
 
-   friend String operator+(const String _lhs,char _sym);
+   friend String operator+(const String _lhs,value_type _sym);
 
 public:
     friend  bool operator<(const String &_hrs,const String &_rhs);
@@ -89,7 +97,7 @@ public:
 
     friend std::istream & getline(std::istream &in,String &_str);
 
-    friend std::istream & getline(std::istream &in,String& _str,char _sym);
+    friend std::istream & getline(std::istream &in,String& _str,value_type _sym);
 
 public:
     const char &operator[](size_type t_index)const;
@@ -110,9 +118,9 @@ public:
 
     const char *data()const noexcept ;
 
-    const char * assign(const char*_str,std::size_t n_size);
+    const char * assign(const_pointer _str,size_type n_size);
 
-    const char * assign(const char *_str);
+    const char * assign(const_pointer _str);
 
 public:
    std::size_t size()const noexcept;
@@ -123,16 +131,18 @@ public:
 
    std::size_t capacity()const noexcept;
 
-   std::size_t find(char _sym,size_type _pos)const;
+   std::size_t find(value_type _sym,size_type _pos)const;
 
-   std::size_t copy(char *_str,size_type n_size,size_type _pos);
+   std::size_t find(const_pointer _str,size_type _pos)const;
+
+   std::size_t copy(pointer_type _str,size_type n_size,size_type _pos);
 
    bool empty()const noexcept;
 
 public:
-   int compare(const char *_str)const;
+   int compare(const_pointer _str)const;
 
-   int compare(size_type _pos,size_type _len,const char *_str,size_type n_size)const;
+   int compare(size_type _pos,size_type _len,const_pointer _str)const;
 
 public:
    void clear()noexcept;
@@ -200,16 +210,9 @@ public:
 
    Iterator end()const;
 
-   Iterator rbegin()const;
-
-   Iterator rend()const;
-
-   Iterator cend()const;
-
-   Iterator cbegin()const;
-
 private:
    String_iterator_type f_begin() const;
+
    String_iterator_type l_end() const ;
 
 private:

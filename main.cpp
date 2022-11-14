@@ -1,5 +1,5 @@
 #include <iostream>
-#include "String.hpp"
+#include <String.hpp>
 
 
 using std::cout;
@@ -9,8 +9,8 @@ using std::endl;
 int main()
 {
    try{
-    String s("Gs");
-    s.assign("Hello_world");
+    String s;
+    s.append("Hello_world",3);
     s.assign("Good_night",4);
     cout<<s<<endl;
     }catch(const StringException &_error){
@@ -18,9 +18,13 @@ int main()
     }
 
 
-    // String s1;
-     //String::String_iterator_type s2;
-     //String::Iterator it;
+    String str("green Apple");
+
+    std::size_t m_result = str.find("Apple",0);
+    if(m_result!=std::string::npos){
+        cout<<"Found : "<<m_result<<endl;
+    }
+
 
     return 0;
 }

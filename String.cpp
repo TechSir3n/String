@@ -10,7 +10,7 @@ String::String()
    m_cap=0;
 }
 
-String::String(const char *_str)
+String::String(const_pointer _str)
 {
    if(_str!=nullptr){
     m_len=strlen(_str);
@@ -24,10 +24,10 @@ String::String(const char *_str)
    }
 }
 
-String::String(const char *_str, size_type t_size)
+String::String(const_pointer _str, size_type t_size)
 {
    if(t_size<0)
-      throw std::runtime_error("Wrong input size string") ;
+      throw std::logic_error("Wrong input size string") ;
 
    if(_str!=nullptr){
        m_len=strlen(_str);
@@ -40,7 +40,7 @@ String::String(const char *_str, size_type t_size)
 
 }
 
-String::String(size_type n_size, char _sym)
+String::String(size_type n_size, value_type _sym)
 {
    m_len=n_size;
    m_str=new char[m_len+1];
@@ -55,6 +55,12 @@ String::String(size_type i)
     m_len=i;
     m_str=new char[m_len+1];
     m_str[0]='\0';
+}
+
+String &String::append(const String &_str)
+{
+    operator=(_str);
+    return *this;
 }
 
 String::String(const String &_other)
@@ -105,7 +111,7 @@ String & String::operator=(String &&rhs)noexcept
     return *this;
 }
 
-String &String::push_back(char m_sym)
+String &String::push_back(value_type m_sym)
 {
     m_str[m_len++]=m_sym;
     return *this;
@@ -121,7 +127,7 @@ String &String::pop_back()
     return *this;
 }
 
-String &String::append(const char *_str)
+String &String::append(const_pointer _str)
 {
    if(_str!=nullptr){
     m_len=strlen(_str);
@@ -135,7 +141,7 @@ String &String::append(const char *_str)
     return *this;
 }
 
-String &String::append(const char *_str, size_type _size)
+String &String::append(const_pointer _str, size_type _size)
 {
    if(_str!=nullptr){
     m_len=strlen(_str);
@@ -147,10 +153,26 @@ String &String::append(const char *_str, size_type _size)
                    "String equals nullptr, ::append(const char*_str, std::size_t _size)");
    }
 
-    return *this;
+   return *this;
 }
 
-String &String::insert(size_type _pos, const char *_str)
+String &String::append(size_type _size, value_type _sym)
+{
+   if(_size>m_len && _size<0){
+       throw std::logic_error("Wrong number of characters to add to string");
+   }
+
+   m_len=_size;
+   m_str=new char[m_len+1];
+
+   for(size_type i=0;i<_size;i++){
+       m_str[i]=_sym;
+   }
+
+   return *this ;
+}
+
+String &String::insert(size_type _pos, const_pointer _str)
 {
     if(_pos<0 && _pos<m_len)
         throw std::logic_error("Wrong input position !");
@@ -194,35 +216,35 @@ String operator+(const String &lhs,const String &rhs)
     return temp;
 }
 
-String operator+(const String &lhs,const char *_str)
+String operator+(const String &lhs,String::const_pointer _str)
 {
      String temp(_str);
      temp+=lhs;
      return temp;
 }
 
-String operator+(const char *_str,const String &lhs)
+String operator+(String::const_pointer _str,const String &lhs)
 {
      String temp(_str);
      temp+=lhs;
      return temp;
 }
 
-String operator+(char _sym,const String &lhs)
+String operator+(String::value_type _sym,const String &lhs)
 {
     String temp(_sym);
     temp+=lhs;
     return temp;
 }
 
-String operator+(const String _lhs,char _sym)
+String operator+(const String _lhs,String::value_type _sym)
 {
      String temp(_sym);
      temp+=_lhs;
      return temp;
 }
 
-String &String::operator+=(const char *_str)
+String &String::operator+=(const_pointer _str)
 {
     if(_str==nullptr){
         throw StringException(
@@ -238,7 +260,7 @@ String &String::operator+=(const char *_str)
     return *this;
 }
 
-String & String::operator+=(char _sym)
+String & String::operator+=(value_type _sym)
 {
     m_len+=sizeof(_sym);
     delete m_str;
@@ -316,8 +338,7 @@ char &String::front()
 char &String::at(size_type t_index)
 {
     if(t_index<0 && t_index>m_len)
-        throw std::logic_error(
-                "Wrong input index line ::at(std::size_t t_index)");
+        throw std::logic_error("Wrong input index line ::at(std::size_t t_index)");
     return operator[](t_index);
 }
 
@@ -331,13 +352,12 @@ const char *String::data() const noexcept
     return m_str;
 }
 
-const char *String::assign(const char *_str, size_type n_size)
+const char *String::assign(const_pointer _str, size_type n_size)
 {
     if(!_str){
-        throw StringException("String equals nullptr, ::assign(const char*_str,std::size_t n_size)");
+        throw StringException("String equals nullptr,"
+                              "::assign(const char*_str,std::size_t n_size)");
     }
-
-    delete[]m_str;
 
     m_len=n_size;
     m_str=new char[m_len+1];
@@ -347,14 +367,13 @@ const char *String::assign(const char *_str, size_type n_size)
     return _str;
 }
 
-const char * String::assign(const char *_str)
+const char * String::assign(const_pointer _str)
 {
     if(!_str){
-        throw StringException(
-                    "String equals nullptr, ::assign(const char *_str,std::size_t n_size)");
+        throw StringException("String equals nullptr,"
+                              "::assign(const char *_str,std::size_t n_size)");
     }
 
-   delete []m_str;
    m_len=strlen(_str);
 
    m_str=new char[m_len+1];
@@ -373,6 +392,7 @@ String::Iterator String::end() const
     return l_end();
 }
 
+
 String::String_iterator_type String::f_begin() const
 {
     return String_iterator_type(m_str,&m_len,0);
@@ -383,11 +403,10 @@ String::String_iterator_type String::l_end() const
     return String_iterator_type(m_str,&m_len,m_len);
 }
 
-const char &String::at(std::size_t t_index) const
+const char &String::at(size_type t_index) const
 {
     if(t_index<0 && t_index>m_len)
-        throw std::logic_error(
-                "Wrong input index string ::at(std::size_t t_index)");
+        throw std::logic_error("Wrong input index string ::at(std::size_t t_index)");
     return operator[](t_index);
 }
 
@@ -411,26 +430,50 @@ std::size_t String::capacity() const noexcept
     return m_cap;
 }
 
-std::size_t String::find(char _sym, size_type _pos) const
+std::size_t String::find(value_type _sym, size_type _pos) const
 {
     if(_pos<0 && _pos>m_len){
         throw std::logic_error(
                     "Wrong input position, ::find(char _sym,std::size_t _pos)");
     }
 
-    for(std::size_t i=0;i<m_len;i++){
-         if(m_str[i]==_sym)
+    for(size_type i=_pos;i<m_len;i++){
+         if(m_str[i]==_sym){
              return _pos;
+         }
     }
 
     return String::npos;
 }
 
-std::size_t String::copy(char *_str, size_type n_size, size_type _pos)
+std::size_t String::find(const_pointer _str, size_type _pos) const
 {
     if(!_str){
-        throw StringException(
-                    "String equals nullptr, ::copy(char *_str,""std::size_t n_size,std::size_t _pos)");
+        throw StringException("String passed to the "
+                              "::find(const_pointer _str,size_type _pos) equals nullptr");
+    }
+
+    if(_pos>0 && _pos>m_len){
+        throw std::logic_error("Wrong input the position of the search string,"
+                               "::find(const_pointer _str,size_type _pos)");
+    }
+
+    char *pos=strstr(m_str,_str);
+
+    //_pos=static_cast<size_type>(*pos);
+
+    if(pos!=nullptr){
+        return pos-m_str;
+    }
+
+    return String::npos;
+}
+
+std::size_t String::copy(pointer_type  _str, size_type n_size, size_type _pos)
+{
+    if(!_str){
+        throw StringException("String equals nullptr,"
+                              "::copy(char *_str,""std::size_t n_size,std::size_t _pos)");
     }
 
     m_len=n_size;
@@ -448,7 +491,7 @@ std::size_t String::copy(char *_str, size_type n_size, size_type _pos)
      return m_len ? false:true;
  }
 
- int String::compare(const char *_str)const
+ int String::compare(const_pointer _str)const
  {
      if(!_str){
          throw StringException(
@@ -465,6 +508,34 @@ std::size_t String::copy(char *_str, size_type n_size, size_type _pos)
 
      return 0;
 
+ }
+
+ int String::compare(size_type _pos, size_type _len, const_pointer _str) const
+ {
+     if(!_str){
+         throw StringException("String equals nullptr,"
+                               "::compare(size_type _pos ,size_type len,const char *_str)");
+     }
+
+     if(_len>m_len && m_len>0 && _pos>m_len && _pos<0){
+         throw std::logic_error("Wrong input position or string size,"
+                                "::compare(size_type _pos ,size_type len,const char *_str)");
+     }
+
+    int m_result = 0;
+
+    for(size_type i=_pos;i<_len;i++){
+
+     m_result=strncmp(m_str,_str,i);
+
+     if(m_result==0){
+         return 1;
+     }else{
+         return -1;
+     }
+   }
+
+    return 0;
  }
 
  void String::clear()noexcept
@@ -533,7 +604,7 @@ std::size_t String::copy(char *_str, size_type n_size, size_type _pos)
       return in;
  }
 
- std::istream & getline(std::istream &in,String &_str,char _sym)
+ std::istream & getline(std::istream &in,String &_str,String::value_type _sym)
  {
      _str.clear();
 
