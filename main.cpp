@@ -17,13 +17,10 @@ int main()
         std::cerr<<_error.what();
     }
 
+    String str("Good_String_Yes");
 
-    String str("green Apple dfdf ");
-
-    std::size_t m_result = str.find_first_of("M",3);
-    if(m_result!=std::string::npos){
-        cout<<"Found : "<<m_result<<endl;
-    }
+    int result=str.find_last_of("Q",0);
+    cout<<result<<endl;
 
 
     return 0;

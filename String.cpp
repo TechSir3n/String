@@ -268,11 +268,10 @@ String &String::operator+=(const_pointer _str)
 String & String::operator+=(value_type _sym)
 {
     m_len+=sizeof(_sym);
-    delete m_str;
     m_str=new char[m_len+1];
 
    for(std::size_t i=0;i<m_len;i++){
-     m_str[i]=_sym;
+     m_str[i]+=_sym;
    }
 
     return  *this;
@@ -399,7 +398,6 @@ String::Iterator String::end() const
     return l_end();
 }
 
-
 String::String_iterator_type String::f_begin() const
 {
     return String_iterator_type(m_str,&m_len,0);
@@ -450,7 +448,6 @@ std::size_t String::find(value_type _sym, size_type _pos) const
         }
     }
 
-
     return String::npos;
 }
 
@@ -477,7 +474,7 @@ std::size_t String::find(const_pointer _str, size_type _pos) const
 
 std::size_t String::find_first_of(value_type _sym, size_type _pos) const
 {
-    if(_pos<0 && _pos>m_len){
+    if(_pos>m_len){
         throw std::logic_error("Incorrect input position,"
                                "::find_first_of(value_type _sym,size_type _pos)");
     }
@@ -509,11 +506,53 @@ std::size_t String::find_first_of(const_pointer _str, size_type _pos) const
     return String::npos;
 }
 
+std::size_t String::find_last_of(value_type _sym, size_type _pos) const
+{
+
+    if(_pos>m_len){
+        for(size_type i =m_len;i>_pos;--i){
+            if(m_str[i]==_sym){
+                  return _pos;
+            }
+        }
+    }else{
+        throw std::logic_error("Incorrenct input postition,"
+                               "::find_last_of(value_type _str,size_type _pos)");
+    }
+
+    return String::npos;
+}
+
+std::size_t String::find_last_of(const_pointer _str, size_type _pos) const
+{
+    if(!_str){
+        throw StringException("String equals nullptr,"
+                              "::find_last_of(const_pointer _str,size_type _pos)");
+    }
+
+    if(_pos<m_len){
+         for(size_type i =m_len;i>_pos;--i){
+             for(size_type j=strlen(_str);j>0;--j){
+                 if(m_str[i]==_str[j]){
+                     return _pos;
+                 }
+             }
+
+         }
+    }
+    else{
+        throw std::logic_error("Incorrenct input postition,"
+                               "::find_last_of(const_pointer _str,size_type _pos)");
+    }
+
+    return String::npos;
+}
+
 std::size_t String::copy(pointer_type  _str, size_type n_size, size_type _pos)
 {
     if(!_str){
         throw StringException("String equals nullptr,"
-                              "::copy(char *_str,""std::size_t n_size,std::size_t _pos)");
+                              "::copy(pointer_type _str,size_type n_size,size_type _pos)");
     }
 
     m_len=n_size;
@@ -625,6 +664,8 @@ std::size_t String::copy(pointer_type  _str, size_type n_size, size_type _pos)
          delete[]m_str;
          m_str=temp_string;
          m_cap=new_cap;
+     }else{
+         throw std::runtime_error("Capacity size corresponds to the original size,let's do more");
      }
  }
 

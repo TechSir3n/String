@@ -137,6 +137,10 @@ public:
 
    std::size_t find_first_of(const_pointer _str,size_type _pos=0)const;
 
+   std::size_t find_last_of(value_type _sym,size_type _pos=0)const;
+
+   std::size_t find_last_of(const_pointer _str,size_type _pos=0)const;
+
    std::size_t copy(pointer_type _str,size_type n_size,size_type _pos=0);
 
    bool empty()const noexcept;
