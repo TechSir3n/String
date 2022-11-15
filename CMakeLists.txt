@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.24.2)
 
-project(CLASS_STRING)
+project(CLASS_STRING LANGUAGES CXX)
 
 set(SOURCE_LIB String.cpp String.hpp StringException.hpp)
 

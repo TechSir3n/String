@@ -496,7 +496,7 @@ std::size_t String::find_first_of(const_pointer _str, size_type _pos) const
     }
 
     for(size_type i =_pos;i<m_len;i++){
-        for(size_type j=0;j<m_len;j++){
+        for(size_type j=0;j<strlen(_str);j++){
         if(m_str[i]==_str[j]){
             return _pos;
         }
