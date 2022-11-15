@@ -18,9 +18,9 @@ int main()
     }
 
 
-    String str("green Apple");
+    String str("green Apple dfdf ");
 
-    std::size_t m_result = str.find("Apple",0);
+    std::size_t m_result = str.find_first_of("M",3);
     if(m_result!=std::string::npos){
         cout<<"Found : "<<m_result<<endl;
     }

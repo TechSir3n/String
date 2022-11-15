@@ -4,12 +4,10 @@
 #include <cstddef> // std::size_t
 #include <iostream>
 #include <cstring>
-#include <vector>
-#include <algorithm>
 #include "StringException.hpp"
 
 class String{
-public:
+private:
     using reference_type=char&;
 
     using value_type = char;
@@ -53,7 +51,7 @@ public:
 
     String &insert(size_type _pos,const_pointer _str);
 
-    String & erase(size_type _pos,size_type _size);
+    String & erase(size_type _pos=0,size_type _size=npos);
 
     String & push_back(value_type m_sym);
 
@@ -131,11 +129,15 @@ public:
 
    std::size_t capacity()const noexcept;
 
-   std::size_t find(value_type _sym,size_type _pos)const;
+   std::size_t find(value_type _sym,size_type _pos=0)const;
 
-   std::size_t find(const_pointer _str,size_type _pos)const;
+   std::size_t find(const_pointer _str,size_type _pos=0)const;
 
-   std::size_t copy(pointer_type _str,size_type n_size,size_type _pos);
+   std::size_t find_first_of(value_type _sym,size_type _pos=0)const;
+
+   std::size_t find_first_of(const_pointer _str,size_type _pos=0)const;
+
+   std::size_t copy(pointer_type _str,size_type n_size,size_type _pos=0);
 
    bool empty()const noexcept;
 
@@ -153,7 +155,7 @@ public:
 
    void resize(size_type _size);
 
-   void reverse(size_type _size);
+   void reserve(size_type new_cap);
 
 public:
 
@@ -221,7 +223,6 @@ private:
    std::size_t m_cap = { 0 }; // capacity
    StringException *str_err;
    using pointer = Iterator;
-   //using const_pointer=Const_Iterator;
 
 private:
     static constexpr int npos = -1;

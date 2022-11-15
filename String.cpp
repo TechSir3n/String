@@ -14,6 +14,7 @@ String::String(const_pointer _str)
 {
    if(_str!=nullptr){
     m_len=strlen(_str);
+    m_cap=m_len;
     m_str=new char[m_len+1];
     strncpy(m_str,_str,m_len);
    }
@@ -31,6 +32,7 @@ String::String(const_pointer _str, size_type t_size)
 
    if(_str!=nullptr){
        m_len=strlen(_str);
+       m_cap=m_len;
        m_str=new char[m_len+1];
        strncpy(m_str,_str,t_size);
    }else{
@@ -43,6 +45,7 @@ String::String(const_pointer _str, size_type t_size)
 String::String(size_type n_size, value_type _sym)
 {
    m_len=n_size;
+   m_cap=m_len;
    m_str=new char[m_len+1];
 
    for(std::size_t i=0;i<m_len;i++){
@@ -54,7 +57,6 @@ String::String(size_type i)
 {
     m_len=i;
     m_str=new char[m_len+1];
-    m_str[0]='\0';
 }
 
 String &String::append(const String &_str)
@@ -131,6 +133,7 @@ String &String::append(const_pointer _str)
 {
    if(_str!=nullptr){
     m_len=strlen(_str);
+    m_cap=m_len;
     m_str=new char[m_len+1];
     strncpy(m_str,_str,m_len);
    }else{
@@ -145,6 +148,7 @@ String &String::append(const_pointer _str, size_type _size)
 {
    if(_str!=nullptr){
     m_len=strlen(_str);
+    m_cap=m_len;
 
     m_str=new char[_size+1];
     strncpy(m_str,_str,_size);
@@ -163,9 +167,10 @@ String &String::append(size_type _size, value_type _sym)
    }
 
    m_len=_size;
+   m_cap=m_len;
    m_str=new char[m_len+1];
 
-   for(size_type i=0;i<_size;i++){
+   for(size_type i=0;i<m_len;i++){
        m_str[i]=_sym;
    }
 
@@ -360,6 +365,7 @@ const char *String::assign(const_pointer _str, size_type n_size)
     }
 
     m_len=n_size;
+    m_cap=m_len;
     m_str=new char[m_len+1];
 
     strncpy(m_str,_str,m_len);
@@ -375,6 +381,7 @@ const char * String::assign(const_pointer _str)
     }
 
    m_len=strlen(_str);
+   m_cap=m_len;
 
    m_str=new char[m_len+1];
    strncpy(m_str,_str,m_len);
@@ -437,11 +444,12 @@ std::size_t String::find(value_type _sym, size_type _pos) const
                     "Wrong input position, ::find(char _sym,std::size_t _pos)");
     }
 
-    for(size_type i=_pos;i<m_len;i++){
-         if(m_str[i]==_sym){
-             return _pos;
-         }
+    for(size_type i =_pos;i<m_len;i++){
+        if(m_str[i]==_sym){
+            return _pos;
+        }
     }
+
 
     return String::npos;
 }
@@ -460,10 +468,42 @@ std::size_t String::find(const_pointer _str, size_type _pos) const
 
     char *pos=strstr(m_str,_str);
 
-    //_pos=static_cast<size_type>(*pos);
-
     if(pos!=nullptr){
         return pos-m_str;
+    }
+
+    return String::npos;
+}
+
+std::size_t String::find_first_of(value_type _sym, size_type _pos) const
+{
+    if(_pos<0 && _pos>m_len){
+        throw std::logic_error("Incorrect input position,"
+                               "::find_first_of(value_type _sym,size_type _pos)");
+    }
+
+    for(size_type i = _pos;i<m_len;i++){
+        if(m_str[i]==_sym){
+            return _pos;
+        }
+    }
+
+    return String::npos;
+}
+
+std::size_t String::find_first_of(const_pointer _str, size_type _pos) const
+{
+    if(!_str){
+        throw StringException("String equal nullptr,"
+                              "::find_first_of(const_pointer _str,size_type _pos)");
+    }
+
+    for(size_type i =_pos;i<m_len;i++){
+        for(size_type j=0;j<m_len;j++){
+        if(m_str[i]==_str[j]){
+            return _pos;
+        }
+      }
     }
 
     return String::npos;
@@ -540,9 +580,8 @@ std::size_t String::copy(pointer_type  _str, size_type n_size, size_type _pos)
 
  void String::clear()noexcept
  {
-     for(std::size_t i=0;i<m_len;i++){
-         m_str[i]=0;
-     }
+     delete[]m_str;
+     m_str=nullptr;
      m_cap=0;
      m_len=0;
  }
@@ -565,14 +604,29 @@ std::size_t String::copy(pointer_type  _str, size_type n_size, size_type _pos)
      if(m_len==_size)
          return;
 
+     while(m_len>m_cap){
+         m_cap*=2;
+     }
+
     m_len=_size;
-    char *_temp=new char[m_len+1];
+    char *_temp=new char[m_cap+1];
 
     strncpy(_temp,m_str,m_len);
     delete [] m_str;
+
     m_str=_temp;
  }
 
+ void String::reserve(size_type new_cap)
+ {
+     if(new_cap>m_cap){
+         char *temp_string=new char[new_cap+1];
+         strncpy(temp_string,m_str,m_len);
+         delete[]m_str;
+         m_str=temp_string;
+         m_cap=new_cap;
+     }
+ }
 
 
  String::~String()
