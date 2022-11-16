@@ -18,7 +18,7 @@ int main()
     }
 
     String str("Good_String_Yes");
-    cout<<str.substr(1,2)<<endl;
+    cout<<str.replace(0,5,"hello")<<endl;
 
     return 0;
 }
