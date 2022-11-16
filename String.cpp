@@ -21,20 +21,19 @@ String::String(const_pointer _str)
    else{
        throw StringException(
                    "String equals nullptr, ::String(const char *_str)");
-
    }
 }
 
-String::String(const_pointer _str, size_type t_size)
+String::String(const_pointer _str, size_type _size)
 {
-   if(t_size<0)
+   if(_size<0)
       throw std::logic_error("Wrong input size string") ;
 
    if(_str!=nullptr){
        m_len=strlen(_str);
        m_cap=m_len;
        m_str=new char[m_len+1];
-       strncpy(m_str,_str,t_size);
+       strncpy(m_str,_str,_size);
    }else{
        throw StringException(
                    "String equals nullptr, ::String(const char *_str,std::size_t t_size)");
@@ -129,6 +128,22 @@ String &String::pop_back()
     return *this;
 }
 
+String String::substr(size_type _pos, size_type _size) const
+{
+    if(_pos>m_len && _size>m_len){
+        throw std::logic_error("Incorrect input position or size to string,::substr(...)");
+    }
+
+   char *_buffer=new char[_size+1];
+   t_substr(_buffer,m_str,_pos,_size);
+
+   String t_str(_buffer);
+
+    delete[]_buffer;
+
+   return t_str;
+}
+
 String &String::append(const_pointer _str)
 {
    if(_str!=nullptr){
@@ -187,7 +202,12 @@ String &String::insert(size_type _pos, const_pointer _str)
   }else{
       throw StringException("String equals nullptr !");
   }
-   return *this;
+  return *this;
+}
+
+String &String::replace(size_type _pos, size_type _size, const_pointer _str)
+{
+
 }
 
 String &String::operator+=(const String &_rhs)
@@ -356,14 +376,14 @@ const char *String::data() const noexcept
     return m_str;
 }
 
-const char *String::assign(const_pointer _str, size_type n_size)
+const char *String::assign(const_pointer _str, size_type _size)
 {
     if(!_str){
         throw StringException("String equals nullptr,"
                               "::assign(const char*_str,std::size_t n_size)");
     }
 
-    m_len=n_size;
+    m_len=_size;
     m_cap=m_len;
     m_str=new char[m_len+1];
 
@@ -669,6 +689,16 @@ std::size_t String::copy(pointer_type  _str, size_type n_size, size_type _pos)
      }
  }
 
+ void String::t_substr(char *_buffer, const char *t_str, size_type _pos, size_type _size)const
+ {
+    if(!t_str){
+         throw StringException("t_substr got nullptr string");
+     }
+
+     for(size_type i =0;i<_size;i++){
+         _buffer[i]=t_str[_pos+i];
+     }
+ }
 
  String::~String()
  {

@@ -34,9 +34,9 @@ public:
 public:
     String(const_pointer  _str);
 
-    String(const_pointer _str,size_type t_size);
+    String(const_pointer _str,size_type _size);
 
-    String(size_type n_size,value_type _sym);
+    String(size_type _size,value_type _sym);
 
     String(size_type i);
 
@@ -53,9 +53,13 @@ public:
 
     String & erase(size_type _pos=0,size_type _size=npos);
 
+    String & replace(size_type _pos,size_type _size,const_pointer _str);
+
     String & push_back(value_type m_sym);
 
     String & pop_back();
+
+   String substr(size_type _pos=0,size_type _size=npos)const;
 
 public:
     String & operator+=(const String &_rhs);
@@ -116,7 +120,7 @@ public:
 
     const char *data()const noexcept ;
 
-    const char * assign(const_pointer _str,size_type n_size);
+    const char * assign(const_pointer _str,size_type _size);
 
     const char * assign(const_pointer _str);
 
@@ -160,6 +164,8 @@ public:
    void resize(size_type _size);
 
    void reserve(size_type new_cap);
+
+   void t_substr(char * _buffer,const char *t_str,size_type _pos,size_type _size)const;
 
 public:
 
