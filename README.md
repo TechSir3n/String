@@ -111,3 +111,14 @@ const char * assign(const_pointer _str);
 std::size_t find(value_type _sym,size_type _pos)const;
 std::size_t find(const_pointer _str,size_type _pos)const;
    ```
+
+##### **Iterator String**
+```
+Iterator &operator++();
+Iterator operator++(int); 
+Iterator & operator--();
+Iterator operator--(int);
+Iterator operator+(size_type t_n);
+Iterator operator-(size_type t_n);
+
+```

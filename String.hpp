@@ -145,6 +145,10 @@ public:
 
    std::size_t find_last_of(const_pointer _str,size_type _pos=0)const;
 
+   std::size_t find_first_nof_of(value_type _sym,size_type _pos=0)const;
+
+   std::size_t find_last_not_of(value_type _sym,size_type _pos=0)const;
+
    std::size_t copy(pointer_type _str,size_type n_size,size_type _pos=0);
 
    bool empty()const noexcept;
@@ -157,9 +161,9 @@ public:
 public:
    void clear()noexcept;
 
-   void swap(String &&_tmp)noexcept;
+   void swap(String &_rhs)noexcept;
 
-   void swap(String &&t_tmp,String &&_tmp);
+   void swap(String &_lhs,String &_rhs)noexcept;
 
    void resize(size_type _size);
 
