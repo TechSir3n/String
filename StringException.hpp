@@ -25,7 +25,6 @@ public:
 public:
     class IteratorException{
     public:
-
        IteratorException() = default;
 
        ~IteratorException() noexcept  { delete iterator_error; }
