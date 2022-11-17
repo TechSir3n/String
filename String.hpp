@@ -239,7 +239,7 @@ private:
    using pointer = Iterator;
 
 private:
-    static constexpr int npos = -1;
+    static constexpr unsigned npos = -1;
 };
 
 #endif // STRING_HPP

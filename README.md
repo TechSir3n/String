@@ -110,7 +110,13 @@ const char * assign(const_pointer _str);
 ```
 std::size_t find(value_type _sym,size_type _pos)const;
 std::size_t find(const_pointer _str,size_type _pos)const;
-   ```
+std::size_t find_first_of(value_type _sym,size_type _pos=0)const;
+std::size_t find_first_of(const_pointer _str,size_type _pos=0)const;
+std::size_t find_last_of(value_type _sym,size_type _pos=0)const;
+std::size_t find_last_of(const_pointer _str,size_type _pos=0)const;
+std::size_t find_first_nof_of(value_type _sym,size_type _pos=0)const;
+std::size_t find_last_not_of(value_type _sym,size_type _pos=0)const;
+```
 
 ##### **Iterator String**
 ```

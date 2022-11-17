@@ -111,7 +111,7 @@ String &String::pop_back() {
 }
 
 String String::substr(size_type _pos, size_type _size) const {
-  if (_pos > m_len && _size > m_len) {
+  if (_pos == String::npos) {
     throw std::logic_error(
         "Incorrect input position or size to string,::substr(...)");
   }
@@ -171,7 +171,7 @@ String &String::append(size_type _size, value_type _sym) {
 }
 
 String &String::insert(size_type _pos, const_pointer _str) {
-  if (_pos < 0 && _pos < m_len)
+  if (_pos == String::npos)
     throw std::logic_error("Wrong input position !");
 
   if (_str != nullptr) {
@@ -217,6 +217,7 @@ String &String::operator+=(const String &_rhs) {
   if (this != &_rhs) {
 
     std::size_t total_length = m_len + _rhs.m_len;
+
     char *_buffer = new char[total_length + 1];
 
     std::copy(m_str, m_str + m_len, _buffer);
@@ -288,27 +289,45 @@ String &String::operator+=(value_type _sym) {
 }
 
 bool operator<(const String &_hrs, const String &_rhs) {
-  return (std::strcmp(_hrs.m_str, _rhs.m_str) < 0);
+  if (_hrs.m_len < _rhs.m_len)
+    return true;
+  else
+    return false;
 }
 
 bool operator>(const String &_hrs, const String &_rhs) {
-  return (std::strcmp(_hrs.m_str, _rhs.m_str) > 0);
+  if (_hrs.m_len > _rhs.m_len)
+    return true;
+  else
+    return false;
 }
 
 bool operator>=(const String &_hrs, const String &_rhs) {
-  return (std::strcmp(_hrs.m_str, _rhs.m_str) >= 0);
+  if (_hrs.m_len >= _rhs.m_len)
+    return true;
+  else
+    return false;
 }
 
 bool operator<=(const String &_hrs, const String &_rhs) {
-  return (std::strcmp(_hrs.m_str, _rhs.m_str) <= 0);
+  if (_hrs.m_len <= _rhs.m_len)
+    return true;
+  else
+    return false;
 }
 
 bool operator!=(const String &_hrs, const String &_rhs) {
-  return (std::strcmp(_hrs.m_str, _rhs.m_str) != 0);
+  if (_hrs.m_len != _rhs.m_len)
+    return true;
+  else
+    return false;
 }
 
 bool operator==(const String &_hrs, const String &_rhs) {
-  return (std::strcmp(_hrs.m_str, _rhs.m_str) == 0);
+  if (_hrs.m_len == _rhs.m_len)
+    return true;
+  else
+    return false;
 }
 
 char &String::operator[](size_type t_index) { return *(m_str + t_index); }
@@ -393,7 +412,7 @@ std::size_t String::length() const noexcept { return m_len; }
 std::size_t String::capacity() const noexcept { return m_cap; }
 
 std::size_t String::find(value_type _sym, size_type _pos) const {
-  if (_pos < 0 && _pos > m_len) {
+  if (_pos == String::npos) {
     throw std::logic_error(
         "Wrong input position, ::find(char _sym,std::size_t _pos)");
   }
@@ -414,7 +433,7 @@ std::size_t String::find(const_pointer _str, size_type _pos) const {
         "::find(const_pointer _str,size_type _pos) equals nullptr");
   }
 
-  if (_pos < 0 && _pos > m_len) {
+  if (_pos == String::npos) {
     throw std::logic_error("Wrong input the position of the search string,"
                            "::find(const_pointer _str,size_type _pos)");
   }
@@ -429,7 +448,7 @@ std::size_t String::find(const_pointer _str, size_type _pos) const {
 }
 
 std::size_t String::find_first_of(value_type _sym, size_type _pos) const {
-  if (_pos > m_len) {
+  if (_pos == String::npos) {
     throw std::logic_error("Incorrect input position,"
                            "::find_first_of(value_type _sym,size_type _pos)");
   }
@@ -498,6 +517,40 @@ std::size_t String::find_last_of(const_pointer _str, size_type _pos) const {
   return String::npos;
 }
 
+std::size_t String::find_first_nof_of(value_type _sym, size_type _pos) const {
+
+  if (_pos == String::npos) {
+    throw std::logic_error("Incorrect input position,::find_first_nof_of(...)");
+  }
+
+  for (size_type i = 0; m_str[i] != '\0'; i++) {
+    if (m_str[i + _pos] == _sym) {
+      return m_str[i + 1];
+
+    } else if (m_str[i + _pos] != _sym) {
+      return m_str[i];
+    }
+  }
+
+  return String::npos;
+}
+
+std::size_t String::find_last_not_of(value_type _sym, size_type _pos) const {
+  if (_pos == String::npos) {
+    throw std::logic_error("Incorrect input position,::find_last_nof_of(...)");
+  }
+
+  for (size_type i = _pos; i >= 0; --i) {
+    if (m_str[i] == _sym) {
+      return m_str[i + 1];
+    } else {
+      return m_str[i];
+    }
+  }
+
+  return String::npos;
+}
+
 std::size_t String::copy(pointer_type _str, size_type n_size, size_type _pos) {
   if (!_str) {
     throw StringException(
@@ -540,7 +593,7 @@ int String::compare(size_type _pos, size_type _len, const_pointer _str) const {
         "::compare(size_type _pos ,size_type len,const char *_str)");
   }
 
-  if (_len > m_len && m_len < 0 && _pos > m_len && _pos < 0) {
+  if (_pos == String::npos && _len > m_len) {
     throw std::logic_error(
         "Wrong input position or string size,"
         "::compare(size_type _pos ,size_type len,const char *_str)");

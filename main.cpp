@@ -17,10 +17,8 @@ int main()
         std::cerr<<_error.what();
     }
 
-    String str("Good_String_Yes");
-    cout<<str.replace(0,5,"hello")<<endl;
-
-
+    String str("Hello_world");
+    cout<<str.find_first_nof_of('H');
 
 
     return 0;
