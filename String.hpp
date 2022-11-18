@@ -169,7 +169,7 @@ public:
 
    void reserve(size_type new_cap);
 
-   void t_substr(char * _buffer,const char *t_str,size_type _pos,size_type _size)const;
+   void t_substr(pointer_type _buffer,const_pointer t_str,size_type _pos,size_type _size)const;
 
 public:
 
@@ -239,7 +239,8 @@ private:
    using pointer = Iterator;
 
 private:
-    static constexpr size_type npos = -1;
+   static constexpr size_type npos = -1;
+
 };
 
 #endif // STRING_HPP
