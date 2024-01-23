@@ -8,26 +8,26 @@
 
 class String{
 private:
-    using reference_type=char&;
+    using reference_type = char&;
 
     using value_type = char;
 
     using pointer_type = char*;
 
-    using size_type=std::size_t;
+    using size_type = std::size_t;
 
-    using const_pointer=const char*;
+    using const_pointer = const char*;
 
 public:
     String() ;
 
     String(const String &);
 
-    String(String&&)noexcept;
+    String(String&&) noexcept;
 
     String & operator=(const String &);
 
-    String & operator=(String &&)noexcept;
+    String & operator=(String &&) noexcept;
 
     ~String();
 
@@ -59,7 +59,7 @@ public:
 
     String & pop_back();
 
-   String substr(size_type _pos=0,size_type _size=npos)const;
+   String substr(size_type _pos=0,size_type _size=npos) const;
 
 public:
     String & operator+=(const String &_rhs);
@@ -84,7 +84,7 @@ public:
 
     friend bool operator>(const String &_hrs,const String &_rhs);
 
-    friend bool  operator==(const String& _hrs,const String &_rhs);
+    friend bool  operator==(const String &_hrs,const String &_rhs);
 
     friend bool  operator!=(const String &_hrs,const String & _rhs);
 
@@ -93,7 +93,7 @@ public:
     friend bool operator>=(const String &_hrs,const String &_rhs);
 
 public:
-    friend std::ostream & operator<<(std::ostream & out,const String &_str);
+    friend std::ostream & operator<<(std::ostream &out,const String &_str);
 
     friend std::istream & operator>>(std::istream &in,String &_str);
 
@@ -102,74 +102,74 @@ public:
     friend std::istream & getline(std::istream &in,String& _str,value_type _sym);
 
 public:
-    const char &operator[](size_type t_index)const;
+    const char &operator[](size_type t_index )const;
     char &operator[](size_type t_index);
 
-    const char &back()const;
+    const char &back() const;
     char &back();
 
-    const char &front()const;
+    const char &front() const;
     char &front();
 
-    const char &at(size_type t_index)const;
+    const char &at(size_type t_index) const;
     char &at(size_type t_index);
 
     char data();
 
-    const char *c_str()const noexcept;
+    const char *c_str() const noexcept;
 
-    const char *data()const noexcept ;
+    const char *data() const noexcept ;
 
     const char * assign(const_pointer _str,size_type _size);
 
     const char * assign(const_pointer _str);
 
 public:
-   std::size_t size()const noexcept;
+   std::size_t size() const noexcept;
 
-   std::size_t max_size()const noexcept;
+   std::size_t max_size() const noexcept;
 
-   std::size_t length()const noexcept;
+   std::size_t length() const noexcept;
 
-   std::size_t capacity()const noexcept;
+   std::size_t capacity() const noexcept;
 
-   std::size_t find(value_type _sym,size_type _pos=0)const;
+   std::size_t find(value_type _sym,size_type _pos = 0) const;
 
-   std::size_t find(const_pointer _str,size_type _pos=0)const;
+   std::size_t find(const_pointer _str,size_type _pos = 0) const;
 
-   std::size_t find_first_of(value_type _sym,size_type _pos=0)const;
+   std::size_t find_first_of(value_type _sym,size_type _pos = 0) const;
 
-   std::size_t find_first_of(const_pointer _str,size_type _pos=0)const;
+   std::size_t find_first_of(const_pointer _str,size_type _pos = 0) const;
 
-   std::size_t find_last_of(value_type _sym,size_type _pos=0)const;
+   std::size_t find_last_of(value_type _sym,size_type _pos = 0) const;
 
-   std::size_t find_last_of(const_pointer _str,size_type _pos=0)const;
+   std::size_t find_last_of(const_pointer _str,size_type _pos = 0) const;
 
-   std::size_t find_first_nof_of(value_type _sym,size_type _pos=0)const;
+   std::size_t find_first_nof_of(value_type _sym,size_type _pos = 0) const;
 
-   std::size_t find_last_not_of(value_type _sym,size_type _pos=0)const;
+   std::size_t find_last_not_of(value_type _sym,size_type _pos = 0) const;
 
-   std::size_t copy(pointer_type _str,size_type n_size,size_type _pos=0);
+   std::size_t copy(pointer_type _str,size_type n_size,size_type _pos = 0);
 
-   bool empty()const noexcept;
-
-public:
-   int compare(const_pointer _str)const;
-
-   int compare(size_type _pos,size_type _len,const_pointer _str)const;
+   bool empty() const noexcept;
 
 public:
-   void clear()noexcept;
+   int compare(const_pointer _str) const;
 
-   void swap(String &_rhs)noexcept;
+   int compare(size_type _pos,size_type _len,const_pointer _str) const;
 
-   void swap(String &_lhs,String &_rhs)noexcept;
+public:
+   void clear() noexcept;
+
+   void swap(String &_rhs) noexcept;
+
+   void swap(String &_lhs,String &_rhs) noexcept;
 
    void resize(size_type _size);
 
    void reserve(size_type new_cap);
 
-   void t_substr(pointer_type _buffer,const_pointer t_str,size_type _pos,size_type _size)const;
+   void t_substr(pointer_type _buffer,const_pointer t_str,size_type _pos,size_type _size) const;
 
 public:
 
@@ -181,7 +181,7 @@ public:
        String_iterator_type(char *m_first,const size_type *m_size,size_type m_pos):
            _first(m_first),_size(m_size),_pos(m_pos) {  }
 
-       String_iterator_type() { _first = nullptr; _size=nullptr; _pos = 0; }
+       String_iterator_type() { _first = nullptr; _size = nullptr; _pos = 0; }
 
        ~String_iterator_type() { delete _first; delete _size; }
    };
@@ -196,10 +196,10 @@ public:
 
        public:
          char &operator*();
-         const char &operator*()const;
+         const char &operator*() const;
 
          char  & operator[](size_type i);
-         const char & operator[](size_type i)const;
+         const char & operator[](size_type i) const;
 
        public:
          Iterator &operator++();
@@ -222,9 +222,9 @@ public:
    };
 
 public:
-   Iterator begin()const;
+   Iterator begin() const;
 
-   Iterator end()const;
+   Iterator end() const;
 
 private:
    String_iterator_type f_begin() const;
